@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="mainBorderPane" styleClass="dashboard-container"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.preschool.controller.DashboardController">
+
+    <!-- ── Sidebar ── -->
+    <left>
+        <VBox styleClass="sidebar" spacing="6" prefWidth="220">
+            <padding><Insets top="20" right="15" bottom="20" left="15"/></padding>
+
+            <Label text="Pre-School" styleClass="sidebar-title">
+                <font><Font name="Arial Bold" size="17"/></font>
+            </Label>
+            <Separator style="-fx-background-color:#34495e;"/>
+
+            <!-- Stats -->
+            <VBox styleClass="stats-container" spacing="5">
+                <Label text="OVERVIEW" styleClass="section-title">
+                    <font><Font name="Arial Bold" size="11"/></font>
+                </Label>
+                <HBox spacing="6">
+                    <Label text="Students:" styleClass="stat-label"/>
+                    <Label fx:id="totalStudentsLabel" text="0" styleClass="stat-value"/>
+                </HBox>
+                <VBox fx:id="teachersStatBox">
+                    <HBox spacing="6">
+                        <Label text="Teachers:" styleClass="stat-label"/>
+                        <Label fx:id="totalTeachersLabel" text="0" styleClass="stat-value"/>
+                    </HBox>
+                </VBox>
+                <HBox spacing="6">
+                    <Label text="Present Today:" styleClass="stat-label"/>
+                    <Label fx:id="presentTodayLabel" text="0" styleClass="stat-value"/>
+                </HBox>
+                <VBox fx:id="feesStatBox">
+                    <HBox spacing="6">
+                        <Label text="Pending Fees:" styleClass="stat-label"/>
+                        <Label fx:id="pendingFeesLabel" text="0" styleClass="stat-value"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <Separator style="-fx-background-color:#34495e;"/>
+
+            <!-- Nav -->
+            <Button text="  Student Management"  onAction="#handleStudentsButton"   styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button fx:id="teachersButton"  text="  Teacher Management"  onAction="#handleTeachersButton"   styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button text="  Attendance"            onAction="#handleAttendanceButton" styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button fx:id="feesButton"      text="  Fee Management"      onAction="#handleFeesButton"       styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button fx:id="reportsButton"   text="  Reports"             onAction="#handleReportsButton"    styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="  Logout" onAction="#handleLogout" styleClass="logout-button" prefWidth="190" prefHeight="42"/>
+        </VBox>
+    </left>
+
+    <!-- ── Main content ── -->
+    <top>
+        <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="10">
+            <Label text="Dashboard" styleClass="app-title">
+                <font><Font name="Arial Bold" size="18"/></font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS"/>
+            <VBox alignment="CENTER_RIGHT" spacing="2">
+                <Label fx:id="loggedInUserLabel" text="User" styleClass="user-label"/>
+                <Label fx:id="userRoleLabel"     text=""     styleClass="user-role-label"/>
+            </VBox>
+        </HBox>
+    </top>
+
+    <!-- center filled dynamically -->
+    <center/>
+</BorderPane>
