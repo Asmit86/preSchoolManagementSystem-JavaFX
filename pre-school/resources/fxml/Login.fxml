@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" styleClass="login-container"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.preschool.controller.LoginController"
+      minWidth="420" minHeight="580">
+
+    <VBox styleClass="login-card" spacing="15" alignment="CENTER">
+
+        <Label text="Pre-School" styleClass="login-title">
+            <font><Font name="Arial Bold" size="22"/></font>
+        </Label>
+        <Label text="Management System" styleClass="login-subtitle"/>
+        <Separator/>
+
+        <Label text="Username:" styleClass="login-field-label"/>
+        <TextField fx:id="usernameField" promptText="Enter username"
+                   prefWidth="280" prefHeight="36"/>
+
+        <Label text="Password:" styleClass="login-field-label"/>
+        <PasswordField fx:id="passwordField" promptText="Enter password"
+                       prefWidth="280" prefHeight="36"/>
+
+        <Label fx:id="errorLabel" styleClass="error-label"
+               wrapText="true" maxWidth="280" visible="false"/>
+
+        <Button text="Login" onAction="#handleLogin"
+                prefWidth="280" prefHeight="38"
+                styleClass="primary-button">
+            <font><Font name="Arial Bold" size="13"/></font>
+        </Button>
+
+        <Separator/>
+
+        <VBox spacing="3" alignment="CENTER_LEFT" maxWidth="280">
+            <Label text="Default Credentials:" style="-fx-text-fill:#888; -fx-font-weight:bold; -fx-font-size:11px;"/>
+            <Label text="Admin   →  admin / admin123"      style="-fx-text-fill:#888; -fx-font-size:11px;"/>
+            <Label text="Teacher →  teacher1 / teacher123" style="-fx-text-fill:#888; -fx-font-size:11px;"/>
+        </VBox>
+    </VBox>
+</VBox>
