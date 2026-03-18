@@ -38,8 +38,6 @@
 
         <VBox spacing="3" alignment="CENTER_LEFT" maxWidth="280">
             <Label text="Default Credentials:" style="-fx-text-fill:#888; -fx-font-weight:bold; -fx-font-size:11px;"/>
-            <Label text="Admin   →  admin / admin123"      style="-fx-text-fill:#888; -fx-font-size:11px;"/>
-            <Label text="Teacher →  teacher1 / teacher123" style="-fx-text-fill:#888; -fx-font-size:11px;"/>
         </VBox>
     </VBox>
 </VBox>
