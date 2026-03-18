@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="content-area"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.preschool.controller.StudentManagementController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Student Management" styleClass="header-label">
+        <font><Font name="Arial Bold" size="20"/></font>
+    </Label>
+
+    <!-- Card -->
+    <VBox styleClass="card" spacing="14" VBox.vgrow="ALWAYS">
+
+        <!-- Form: 4-column grid matching reference -->
+        <Label text="Student Details" styleClass="card-title"/>
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="First Name" styleClass="form-label"/>
+                <TextField fx:id="firstNameField" promptText="First Name" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Last Name" styleClass="form-label"/>
+                <TextField fx:id="lastNameField" promptText="Last Name" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Date of Birth" styleClass="form-label"/>
+                <DatePicker fx:id="dobPicker" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Gender" styleClass="form-label"/>
+                <ComboBox fx:id="genderCombo" promptText="Gender" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Guardian Name" styleClass="form-label"/>
+                <TextField fx:id="guardianNameField" promptText="Guardian Name" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Guardian Phone" styleClass="form-label"/>
+                <TextField fx:id="guardianPhoneField" promptText="Phone Number" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Guardian Email" styleClass="form-label"/>
+                <TextField fx:id="guardianEmailField" promptText="Email (optional)" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Address" styleClass="form-label"/>
+                <TextField fx:id="addressArea" promptText="Address" prefHeight="34"/>
+            </VBox>
+        </HBox>
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Enrollment Date" styleClass="form-label"/>
+                <DatePicker fx:id="enrollmentDatePicker" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Class" styleClass="form-label"/>
+                <ComboBox fx:id="classCombo" promptText="Class" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Section" styleClass="form-label"/>
+                <TextField fx:id="sectionField" promptText="Section" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Status" styleClass="form-label"/>
+                <ComboBox fx:id="statusCombo" promptText="Status" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+
+        <!-- Buttons row -->
+        <HBox spacing="8">
+            <Button text="Add"    onAction="#handleAddStudent"    styleClass="primary-button"   prefHeight="34"/>
+            <Button fx:id="updateButton" text="Update" onAction="#handleUpdateStudent" styleClass="success-button" prefHeight="34" disable="true"/>
+            <Button fx:id="deleteButton" text="Delete" onAction="#handleDeleteStudent" styleClass="danger-button"  prefHeight="34" disable="true"/>
+            <Button text="Clear"  onAction="#handleClearFields"   styleClass="secondary-button" prefHeight="34"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="searchField" promptText="Search students..." prefHeight="34" prefWidth="200"/>
+            <Button text="Search" onAction="#handleSearch" styleClass="primary-button" prefHeight="34"/>
+        </HBox>
+
+        <Separator/>
+
+        <!-- Table -->
+        <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="idColumn"       text="ID"           prefWidth="55"/>
+                <TableColumn fx:id="nameColumn"     text="Name"         prefWidth="160"/>
+                <TableColumn fx:id="genderColumn"   text="Gender"       prefWidth="80"/>
+                <TableColumn fx:id="guardianColumn" text="Guardian"     prefWidth="150"/>
+                <TableColumn fx:id="phoneColumn"    text="Phone"        prefWidth="130"/>
+                <TableColumn fx:id="statusColumn"   text="Status"       prefWidth="90"/>
+            </columns>
+            <placeholder><Label text="No students found."/></placeholder>
+        </TableView>
+    </VBox>
+</VBox>

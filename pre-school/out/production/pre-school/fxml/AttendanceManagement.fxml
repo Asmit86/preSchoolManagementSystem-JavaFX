@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="content-area"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.preschool.controller.AttendanceManagementController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Attendance" styleClass="header-label">
+        <font><Font name="Arial Bold" size="20"/></font>
+    </Label>
+
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+        <!-- Mark Attendance -->
+        <Tab text="Mark Attendance">
+            <VBox styleClass="card" spacing="14">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Date:" styleClass="form-label"/>
+                    <DatePicker fx:id="attendanceDatePicker" prefWidth="170" prefHeight="34"/>
+                    <Button text="Load Students"   onAction="#handleLoadDate"        styleClass="primary-button"   prefHeight="34"/>
+                    <Button text="Mark All Present" onAction="#handleMarkAllPresent"  styleClass="secondary-button" prefHeight="34"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="attendanceSummaryLabel" text="Total: 0  |  Present: 0  |  Absent: 0  |  Leave: 0"
+                           style="-fx-text-fill:#555; -fx-font-size:12px;"/>
+                </HBox>
+
+                <TableView fx:id="markTable" VBox.vgrow="ALWAYS" prefHeight="380">
+                    <columns>
+                        <TableColumn fx:id="markNameColumn"    text="Student Name" prefWidth="280"/>
+                        <TableColumn fx:id="markStatusColumn"  text="Status"       prefWidth="200"/>
+                        <TableColumn fx:id="markRemarksColumn" text="Remarks"      prefWidth="300"/>
+                    </columns>
+                    <placeholder><Label text="Click 'Load Students' to begin."/></placeholder>
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT">
+                    <Button text="Save Attendance" onAction="#handleSaveAttendance"
+                            styleClass="primary-button" prefHeight="36" prefWidth="180"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- View History -->
+        <Tab text="View History">
+            <VBox styleClass="card" spacing="14">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="From:" styleClass="form-label"/>
+                    <DatePicker fx:id="fromDatePicker" prefWidth="160" prefHeight="34"/>
+                    <Label text="To:"   styleClass="form-label"/>
+                    <DatePicker fx:id="toDatePicker"   prefWidth="160" prefHeight="34"/>
+                    <Button text="Load Records" onAction="#handleViewHistory"
+                            styleClass="primary-button" prefHeight="34"/>
+                </HBox>
+
+                <TableView fx:id="historyTable" VBox.vgrow="ALWAYS" prefHeight="400">
+                    <columns>
+                        <TableColumn fx:id="historyDateColumn"    text="Date"         prefWidth="130"/>
+                        <TableColumn fx:id="historyNameColumn"    text="Student Name" prefWidth="230"/>
+                        <TableColumn fx:id="historyStatusColumn"  text="Status"       prefWidth="120"/>
+                        <TableColumn fx:id="historyRemarksColumn" text="Remarks"      prefWidth="270"/>
+                    </columns>
+                    <placeholder><Label text="Select a date range and click Load Records."/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>

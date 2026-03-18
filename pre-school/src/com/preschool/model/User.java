@@ -10,7 +10,7 @@ public abstract class User {
     private final String username;     // immutable, no setter
     private final String role;         // immutable, no setter
     private       String fullName;     // mutable only by subclass
-    private       String password;     // write-only — nO getter
+    private       String password;     // write-only — no getter
 
     protected User(int userId, String username, String fullName, String role) {
         this.userId   = userId;

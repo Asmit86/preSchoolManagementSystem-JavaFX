@@ -2,21 +2,18 @@ package com.preschool.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+
+
+
 public class PasswordUtil {
 
-    public static String hashPassword(String plainPassword) {
-        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12));
+    // Compare plain text password with DB password
+    public static boolean verifyPassword(String inputPassword, String dbPassword) {
+        return inputPassword != null && inputPassword.equals(dbPassword);
     }
 
-    public static boolean verifyPassword(String plainPassword, String hashedPassword) {
-        try {
-            return BCrypt.checkpw(plainPassword, hashedPassword);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean needsRehash(String hashedPassword) {
-        return !hashedPassword.startsWith("$2a$12$");
+    // Optional: keep this if you plan to create users later
+    public static String hashPassword(String password) {
+        return password; // no hashing, store as plain text
     }
 }

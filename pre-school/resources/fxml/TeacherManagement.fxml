@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="content-area"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.preschool.controller.TeacherManagementController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Teacher Management" styleClass="header-label">
+        <font><Font name="Arial Bold" size="20"/></font>
+    </Label>
+
+    <VBox styleClass="card" spacing="14" VBox.vgrow="ALWAYS">
+
+        <Label text="Teacher Details" styleClass="card-title"/>
+
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="First Name" styleClass="form-label"/>
+                <TextField fx:id="firstNameField" promptText="First Name" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Last Name" styleClass="form-label"/>
+                <TextField fx:id="lastNameField" promptText="Last Name" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Date of Birth" styleClass="form-label"/>
+                <DatePicker fx:id="dobPicker" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Gender" styleClass="form-label"/>
+                <ComboBox fx:id="genderCombo" promptText="Gender" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Phone" styleClass="form-label"/>
+                <TextField fx:id="phoneField" promptText="Phone Number" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Email" styleClass="form-label"/>
+                <TextField fx:id="emailField" promptText="Email (optional)" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Address" styleClass="form-label"/>
+                <TextField fx:id="addressArea" promptText="Address" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Qualification" styleClass="form-label"/>
+                <TextField fx:id="qualificationField" promptText="e.g. B.Ed" prefHeight="34"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Joining Date" styleClass="form-label"/>
+                <DatePicker fx:id="joiningDatePicker" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Status" styleClass="form-label"/>
+                <ComboBox fx:id="statusCombo" promptText="Status" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Username (Login)" styleClass="form-label"/>
+                <TextField fx:id="usernameField" promptText="e.g. teacher_ram" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Password (Login)" styleClass="form-label"/>
+                <PasswordField fx:id="passwordField" promptText="Min 6 characters" prefHeight="34"/>
+            </VBox>
+        </HBox>
+
+        <!-- Buttons -->
+        <HBox spacing="8">
+            <Button text="Add"    onAction="#handleAddTeacher"    styleClass="primary-button"   prefHeight="34"/>
+            <Button fx:id="updateButton" text="Update" onAction="#handleUpdateTeacher" styleClass="success-button" prefHeight="34" disable="true"/>
+            <Button fx:id="deleteButton" text="Delete" onAction="#handleDeleteTeacher" styleClass="danger-button"  prefHeight="34" disable="true"/>
+            <Button text="Clear"  onAction="#handleClearFields"   styleClass="secondary-button" prefHeight="34"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <TextField fx:id="searchField" promptText="Search teachers..." prefHeight="34" prefWidth="200"/>
+            <Button text="Search" onAction="#handleSearch" styleClass="primary-button" prefHeight="34"/>
+        </HBox>
+
+        <Separator/>
+
+        <TableView fx:id="teacherTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="idColumn"            text="ID"            prefWidth="55"/>
+                <TableColumn fx:id="nameColumn"          text="Name"          prefWidth="160"/>
+                <TableColumn fx:id="genderColumn"        text="Gender"        prefWidth="80"/>
+                <TableColumn fx:id="phoneColumn"         text="Phone"         prefWidth="130"/>
+                <TableColumn fx:id="qualificationColumn" text="Qualification" prefWidth="160"/>
+                <TableColumn fx:id="statusColumn"        text="Status"        prefWidth="90"/>
+            </columns>
+            <placeholder><Label text="No teachers found."/></placeholder>
+        </TableView>
+    </VBox>
+</VBox>
