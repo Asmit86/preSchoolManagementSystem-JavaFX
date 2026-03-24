@@ -30,7 +30,7 @@ CREATE TABLE teachers (
 CREATE TABLE users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL, -- plain text (for your current system)
+    password VARCHAR(255) NOT NULL, 
     full_name VARCHAR(100),
     role ENUM('ADMIN','TEACHER') NOT NULL,
     teacher_id INT NULL,
