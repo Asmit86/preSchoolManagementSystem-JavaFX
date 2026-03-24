@@ -128,12 +128,6 @@ public class DatabaseUtil {
             VALUES ('admin', 'admin123', 'System Administrator', 'ADMIN')
             ON DUPLICATE KEY UPDATE username=username;
             
-            -- Insert sample classes
-            INSERT INTO classes (class_name, capacity) VALUES 
-            ('Nursery', 20),
-            ('LKG', 25),
-            ('UKG', 25)
-            ON DUPLICATE KEY UPDATE class_name=class_name;
             """;
     }
 }

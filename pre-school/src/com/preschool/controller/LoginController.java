@@ -60,7 +60,7 @@ public class LoginController {
 
                 String storedPassword = rs.getString("password");
 
-                // 🔥 Plain text comparison
+                //Plain text comparison
                 if (password.equals(storedPassword)) {
 
                     int teacherId = rs.getInt("teacher_id");

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="content-area"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.preschool.controller.ReportsController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Reports" styleClass="header-label">
+        <font><Font name="Arial Bold" size="20"/></font>
+    </Label>
+
+    <!-- Summary cards -->
+    <HBox spacing="12">
+        <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Total Students"  styleClass="form-label"/>
+            <Label fx:id="totalStudentsLabel"  text="0"
+                   style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#3498db;"/>
+        </VBox>
+        <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Active Students" styleClass="form-label"/>
+            <Label fx:id="activeStudentsLabel" text="0"
+                   style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#2ecc71;"/>
+        </VBox>
+        <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Total Teachers"  styleClass="form-label"/>
+            <Label fx:id="totalTeachersLabel"  text="0"
+                   style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#9b59b6;"/>
+        </VBox>
+        <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Present Today"   styleClass="form-label"/>
+            <Label fx:id="presentTodayLabel"   text="0"
+                   style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#e67e22;"/>
+        </VBox>
+        <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Collected"       styleClass="form-label"/>
+            <Label fx:id="totalCollectedLabel" text="Rs.0"
+                   style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#3498db;"/>
+        </VBox>
+        <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Pending"         styleClass="form-label"/>
+            <Label fx:id="totalPendingLabel"   text="Rs.0"
+                   style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#e74c3c;"/>
+        </VBox>
+    </HBox>
+
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+        <!-- Student Report -->
+        <Tab text="Student Report">
+            <VBox styleClass="card" spacing="12">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Filter:" styleClass="form-label"/>
+                    <ComboBox fx:id="studentStatusFilter" onAction="#handleStudentReportFilter" prefWidth="150" prefHeight="34"/>
+                </HBox>
+                <TableView fx:id="studentReportTable" VBox.vgrow="ALWAYS" prefHeight="380">
+                    <columns>
+                        <TableColumn fx:id="srIdCol"       text="ID"       prefWidth="60"/>
+                        <TableColumn fx:id="srNameCol"     text="Name"     prefWidth="180"/>
+                        <TableColumn fx:id="srGenderCol"   text="Gender"   prefWidth="80"/>
+                        <TableColumn fx:id="srClassCol"    text="Class"    prefWidth="90"/>
+                        <TableColumn fx:id="srGuardianCol" text="Guardian" prefWidth="170"/>
+                        <TableColumn fx:id="srStatusCol"   text="Status"   prefWidth="90"/>
+                    </columns>
+                    <placeholder><Label text="No records."/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- Attendance Report -->
+        <Tab text="Attendance Report">
+            <VBox styleClass="card" spacing="12">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="From:" styleClass="form-label"/>
+                    <DatePicker fx:id="attFromDate" prefWidth="160" prefHeight="34"/>
+                    <Label text="To:"   styleClass="form-label"/>
+                    <DatePicker fx:id="attToDate"   prefWidth="160" prefHeight="34"/>
+                    <Button text="Generate" onAction="#handleLoadAttendanceReport"
+                            styleClass="primary-button" prefHeight="34"/>
+                </HBox>
+                <SplitPane dividerPositions="0.55" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="attReportTable">
+                        <columns>
+                            <TableColumn fx:id="arDateCol"   text="Date"    prefWidth="120"/>
+                            <TableColumn fx:id="arNameCol"   text="Student" prefWidth="200"/>
+                            <TableColumn fx:id="arStatusCol" text="Status"  prefWidth="100"/>
+                        </columns>
+                        <placeholder><Label text="Click Generate."/></placeholder>
+                    </TableView>
+                    <PieChart fx:id="attendancePieChart"/>
+                </SplitPane>
+            </VBox>
+        </Tab>
+
+        <!-- Fee Report -->
+        <Tab text="Fee Report">
+            <VBox styleClass="card" spacing="12">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Filter:" styleClass="form-label"/>
+                    <ComboBox fx:id="feeStatusFilter" onAction="#handleFeeReportFilter" prefWidth="150" prefHeight="34"/>
+                </HBox>
+                <SplitPane dividerPositions="0.55" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="feeReportTable">
+                        <columns>
+                            <TableColumn fx:id="frStudentCol" text="Student" prefWidth="150"/>
+                            <TableColumn fx:id="frMonthCol"   text="Month"   prefWidth="90"/>
+                            <TableColumn fx:id="frYearCol"    text="Year"    prefWidth="60"/>
+                            <TableColumn fx:id="frAmountCol"  text="Amount"  prefWidth="90"/>
+                            <TableColumn fx:id="frPaidCol"    text="Paid"    prefWidth="90"/>
+                            <TableColumn fx:id="frStatusCol"  text="Status"  prefWidth="80"/>
+                        </columns>
+                        <placeholder><Label text="No records."/></placeholder>
+                    </TableView>
+                    <BarChart fx:id="feeBarChart">
+                        <xAxis><CategoryAxis label="Month"/></xAxis>
+                        <yAxis><NumberAxis label="Amount (Rs.)"/></yAxis>
+                    </BarChart>
+                </SplitPane>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>

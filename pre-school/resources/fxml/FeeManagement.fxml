@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="content-area"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.preschool.controller.FeeManagementController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Fee Management" styleClass="header-label">
+        <font><Font name="Arial Bold" size="20"/></font>
+    </Label>
+
+    <!-- Stats bar -->
+    <HBox spacing="15">
+        <VBox styleClass="card" alignment="CENTER" prefWidth="200" spacing="4">
+            <Label text="Total Collected" styleClass="form-label"/>
+            <Label fx:id="totalCollectedLabel" text="Rs. 0.00"
+                   style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#3498db;"/>
+        </VBox>
+        <VBox styleClass="card" alignment="CENTER" prefWidth="200" spacing="4">
+            <Label text="Total Pending" styleClass="form-label"/>
+            <Label fx:id="totalPendingLabel" text="Rs. 0.00"
+                   style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#e74c3c;"/>
+        </VBox>
+        <VBox styleClass="card" alignment="CENTER" prefWidth="200" spacing="4">
+            <Label text="Total Records" styleClass="form-label"/>
+            <Label fx:id="totalRecordsLabel" text="0"
+                   style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#2c3e50;"/>
+        </VBox>
+    </HBox>
+
+    <VBox styleClass="card" spacing="14" VBox.vgrow="ALWAYS">
+        <Label text="Fee Records" styleClass="card-title"/>
+
+        <!-- Form -->
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Student" styleClass="form-label"/>
+                <ComboBox fx:id="studentCombo" promptText="Select Student" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Month" styleClass="form-label"/>
+                <ComboBox fx:id="monthCombo" promptText="Month" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Year" styleClass="form-label"/>
+                <TextField fx:id="yearField" promptText="e.g. 2024" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Total Amount" styleClass="form-label"/>
+                <TextField fx:id="amountField" promptText="e.g. 2000" prefHeight="34"/>
+            </VBox>
+        </HBox>
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Paid Amount" styleClass="form-label"/>
+                <TextField fx:id="paidAmountField" promptText="e.g. 1000"
+                           onKeyReleased="#handlePaidAmountChanged" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Status" styleClass="form-label"/>
+                <ComboBox fx:id="statusCombo" promptText="Status" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Payment Date" styleClass="form-label"/>
+                <DatePicker fx:id="paymentDatePicker" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Remarks" styleClass="form-label"/>
+                <TextField fx:id="remarksArea" promptText="Remarks (optional)" prefHeight="34"/>
+            </VBox>
+        </HBox>
+
+        <!-- Buttons -->
+        <HBox spacing="8">
+            <Button text="Add"    onAction="#handleAddFee"      styleClass="primary-button"   prefHeight="34"/>
+            <Button fx:id="updateButton" text="Update" onAction="#handleUpdateFee" styleClass="success-button" prefHeight="34" disable="true"/>
+            <Button fx:id="deleteButton" text="Delete" onAction="#handleDeleteFee" styleClass="danger-button"  prefHeight="34" disable="true"/>
+            <Button text="Clear"  onAction="#handleClearFields"  styleClass="secondary-button" prefHeight="34"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ComboBox fx:id="filterStatusCombo" onAction="#handleFilterChange" prefWidth="130" prefHeight="34"/>
+            <TextField fx:id="searchField" promptText="Search..." prefHeight="34" prefWidth="180"/>
+            <Button text="Search" onAction="#handleSearch" styleClass="primary-button" prefHeight="34"/>
+        </HBox>
+
+        <Separator/>
+
+        <TableView fx:id="feeTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="idColumn"      text="ID"       prefWidth="50"/>
+                <TableColumn fx:id="studentColumn" text="Student"  prefWidth="150"/>
+                <TableColumn fx:id="monthColumn"   text="Month"    prefWidth="90"/>
+                <TableColumn fx:id="yearColumn"    text="Year"     prefWidth="60"/>
+                <TableColumn fx:id="amountColumn"  text="Amount"   prefWidth="90"/>
+                <TableColumn fx:id="paidColumn"    text="Paid"     prefWidth="90"/>
+                <TableColumn fx:id="statusColumn"  text="Status"   prefWidth="90"/>
+                <TableColumn fx:id="dateColumn"    text="Pay Date" prefWidth="100"/>
+            </columns>
+            <placeholder><Label text="No fee records found."/></placeholder>
+        </TableView>
+    </VBox>
+</VBox>

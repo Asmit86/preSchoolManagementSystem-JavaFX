@@ -75,7 +75,7 @@ public class ReportsController {
         loadSummary();
     }
 
-    // ──────────────────────────────── SUMMARY ────────────────────────────────
+    // SUMMARY
 
     private void loadSummary() {
         List<Student> allStudents = studentDAO.getAllStudents();
@@ -88,7 +88,7 @@ public class ReportsController {
         totalPendingLabel.setText(String.format("Rs. %.2f", feeDAO.getTotalPending()));
     }
 
-    // ──────────────────────────────── STUDENT REPORT ─────────────────────────
+    // STUDENT REPORT
 
     private void setupStudentReport() {
         srIdCol.setCellValueFactory(cd -> new javafx.beans.property.SimpleIntegerProperty(cd.getValue().getStudentId()).asObject());
@@ -120,7 +120,7 @@ public class ReportsController {
         studentReportTable.setItems(FXCollections.observableArrayList(students));
     }
 
-    // ──────────────────────────────── ATTENDANCE REPORT ──────────────────────
+    // ATTENDANCE REPORT
 
     private void setupAttendanceReport() {
         arDateCol.setCellValueFactory(cd -> new SimpleStringProperty(
@@ -161,7 +161,7 @@ public class ReportsController {
         attendancePieChart.setTitle("Attendance Summary");
     }
 
-    // ──────────────────────────────── FEE REPORT ─────────────────────────────
+    // FEE REPORT
 
     private void setupFeeReport() {
         frStudentCol.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getStudentName()));
