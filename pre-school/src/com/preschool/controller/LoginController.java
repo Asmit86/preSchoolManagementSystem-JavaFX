@@ -5,7 +5,6 @@ import com.preschool.model.User;
 import com.preschool.util.DatabaseUtil;
 import com.preschool.util.SessionManager;
 import com.preschool.util.UserFactory;
-import com.preschool.util.PasswordUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -14,13 +13,14 @@ import java.sql.*;
 
 public class LoginController {
 
-    @FXML private TextField     usernameField;
+    @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
-    @FXML private Label         errorLabel;
+    @FXML private Label errorLabel;
 
     @FXML
     public void initialize() {
         errorLabel.setVisible(false);
+
         passwordField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) handleLogin();
         });
@@ -37,6 +37,7 @@ public class LoginController {
         }
 
         User user = authenticate(username, password);
+
         if (user != null) {
             SessionManager.getInstance().login(user);
             MainApp.showDashboard();
@@ -45,10 +46,10 @@ public class LoginController {
         }
     }
 
-
     private User authenticate(String username, String password) {
-        String sql = "SELECT user_id, username, full_name, role, password " +
-                "FROM users WHERE username=?";
+
+        String sql = "SELECT user_id, username, full_name, role, password, teacher_id FROM users WHERE username=?";
+
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -56,23 +57,30 @@ public class LoginController {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                String hashedPassword = rs.getString("password");
 
-                // Verify password using BCrypt
-                if (PasswordUtil.verifyPassword(password, hashedPassword)) {
-                    // UserFactory decides whether to return Admin or TeacherUser
+                String storedPassword = rs.getString("password");
+
+                // 🔥 Plain text comparison
+                if (password.equals(storedPassword)) {
+
+                    int teacherId = rs.getInt("teacher_id");
+                    if (rs.wasNull()) teacherId = -1;
+
                     return UserFactory.create(
                             rs.getInt("user_id"),
                             rs.getString("username"),
                             rs.getString("full_name"),
-                            rs.getString("role")
+                            rs.getString("role"),
+                            teacherId
                     );
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
             showError("Database error: " + e.getMessage());
         }
+
         return null;
     }
 
