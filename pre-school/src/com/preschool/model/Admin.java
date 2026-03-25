@@ -15,7 +15,8 @@ public class Admin extends User {
 
     @Override
     public List<String> getPermissions() {
-        return List.of("Teachers", "Students", "Attendance", "Reports");
+        // Admin has access to all modules including Fees
+        return List.of("Teachers", "Students", "Attendance", "Fees", "Reports");
     }
 
     @Override

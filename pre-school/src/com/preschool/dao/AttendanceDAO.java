@@ -11,8 +11,10 @@ import java.util.List;
 public class AttendanceDAO {
 
     public boolean saveAttendance(Attendance attendance) {
+        // Use row alias instead of deprecated VALUES() function for MySQL 8.x compatibility
         String query = "INSERT INTO attendance (student_id, attendance_date, status, remarks) " +
-                "VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE status=VALUES(status), remarks=VALUES(remarks)";
+                "VALUES (?, ?, ?, ?) AS new_row " +
+                "ON DUPLICATE KEY UPDATE status = new_row.status, remarks = new_row.remarks";
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, attendance.getStudentId());
@@ -20,7 +22,10 @@ public class AttendanceDAO {
             ps.setString(3, attendance.getStatus());
             ps.setString(4, attendance.getRemarks());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); return false; }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List<Attendance> getAttendanceByDate(LocalDate date) {
@@ -51,7 +56,10 @@ public class AttendanceDAO {
         return list;
     }
 
-    // Loads all active students for a given date, pre-filling existing records
+    /**
+     * Loads all active students for a given date, pre-filling existing attendance records.
+     * Students with no record default to "Present".
+     */
     public List<Attendance> getAttendanceSheetForDate(LocalDate date) {
         List<Attendance> list = new ArrayList<>();
         String query = "SELECT s.student_id, CONCAT(s.first_name, ' ', s.last_name) AS student_name, " +

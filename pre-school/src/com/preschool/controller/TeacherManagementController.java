@@ -77,9 +77,9 @@ public class TeacherManagementController {
 
     @FXML
     private void handleAddTeacher() {
-        if (!validate()) return;
+        // For Add, all fields including username and password are required
+        if (!validateForAdd()) return;
 
-        // Check if username already exists
         if (teacherDAO.usernameExists(usernameField.getText().trim())) {
             showError("Username already exists. Please choose a different username.");
             return;
@@ -101,7 +101,8 @@ public class TeacherManagementController {
     @FXML
     private void handleUpdateTeacher() {
         if (selectedTeacher == null) { showError("Please select a teacher to update."); return; }
-        if (!validate()) return;
+        // For Update, username and password are NOT required (login credentials are set at creation)
+        if (!validateForUpdate()) return;
         Teacher t = buildTeacher();
         t.setTeacherId(selectedTeacher.getTeacherId());
         if (teacherDAO.updateTeacher(t)) {
@@ -118,7 +119,8 @@ public class TeacherManagementController {
         if (selectedTeacher == null) { showError("Please select a teacher to delete."); return; }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
-        alert.setContentText("Delete " + selectedTeacher.getFullName() + "?");
+        alert.setContentText("Delete " + selectedTeacher.getFullName() + "?\n" +
+                "This will also delete their login account.");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             if (teacherDAO.deleteTeacher(selectedTeacher.getTeacherId())) {
@@ -141,7 +143,8 @@ public class TeacherManagementController {
     @FXML
     private void handleClearFields() { clearFields(); }
 
-    private boolean validate() {
+    /** Full validation used when adding a new teacher (includes login credentials). */
+    private boolean validateForAdd() {
         if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty()
                 || dobPicker.getValue() == null || genderCombo.getValue() == null
                 || phoneField.getText().trim().isEmpty() || addressArea.getText().trim().isEmpty()
@@ -152,6 +155,18 @@ public class TeacherManagementController {
         }
         if (passwordField.getText().trim().length() < 6) {
             showError("Password must be at least 6 characters long.");
+            return false;
+        }
+        return true;
+    }
+
+    /** Partial validation used when updating (login credentials not re-entered). */
+    private boolean validateForUpdate() {
+        if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty()
+                || dobPicker.getValue() == null || genderCombo.getValue() == null
+                || phoneField.getText().trim().isEmpty() || addressArea.getText().trim().isEmpty()
+                || qualificationField.getText().trim().isEmpty() || joiningDatePicker.getValue() == null) {
+            showError("Please fill all required fields.");
             return false;
         }
         return true;
@@ -183,6 +198,9 @@ public class TeacherManagementController {
         qualificationField.setText(t.getQualification());
         joiningDatePicker.setValue(t.getJoiningDate());
         statusCombo.setValue(t.getStatus());
+        // Clear login fields when selecting a teacher for update
+        usernameField.clear();
+        passwordField.clear();
     }
 
     private void clearFields() {
