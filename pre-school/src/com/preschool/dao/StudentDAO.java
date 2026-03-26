@@ -8,8 +8,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * DAO class for handling student database operations
+ */
 public class StudentDAO {
 
+
+    /**
+     * Adds a new student to the database
+     */
     public boolean addStudent(Student student) {
         String query = "INSERT INTO students (first_name, last_name, date_of_birth, gender, " +
                 "guardian_name, guardian_phone, guardian_email, address, enrollment_date, " +

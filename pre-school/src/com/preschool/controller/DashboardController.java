@@ -14,6 +14,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controller class responsible for handling UI events
+ * and connecting the interface with backend logic
+ */
 public class DashboardController {
 
     @FXML private BorderPane mainBorderPane;
@@ -59,19 +63,19 @@ public class DashboardController {
     private void applyRoleBasedVisibility() {
         User user = SessionManager.getInstance().getCurrentUser();
 
-        // ── Top bar labels (polymorphic calls) ──────────────────
+        // ── Top bar labels (polymorphic calls)
         if (loggedInUserLabel != null)
             loggedInUserLabel.setText(user.getFullName());
         if (userRoleLabel != null)
             userRoleLabel.setText(user.getRoleLabel());   // polymorphic
 
-        // ── Nav buttons — shown only when user has permission ───
+        // ── Nav buttons — shown only when user has permission
         // canAccessModule() dispatches to Admin or TeacherUser at runtime
         setVisible(teachersButton,  user.canAccessModule("Teachers"));
         setVisible(feesButton,      user.canAccessModule("Fees"));
         setVisible(reportsButton,   user.canAccessModule("Reports"));
 
-        // ── Stat cards — same permission gate ───────────────────
+        // ── Stat cards — same permission gate
         setVisible(teachersStatBox, user.canAccessModule("Teachers"));
         setVisible(feesStatBox,     user.canAccessModule("Fees"));
     }

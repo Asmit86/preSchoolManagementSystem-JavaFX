@@ -22,6 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+/**
+ * Controller class responsible for handling UI events
+ * and connecting the interface with backend logic
+ */
 public class ReportsController {
 
     // Summary cards

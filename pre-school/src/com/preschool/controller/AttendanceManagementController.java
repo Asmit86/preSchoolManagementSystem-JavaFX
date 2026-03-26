@@ -12,6 +12,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
 import java.util.List;
 
+
+/**
+ * Controller class responsible for handling UI events
+ * and connecting the interface with backend logic
+ */
 public class AttendanceManagementController {
 
     // Mark Attendance tab

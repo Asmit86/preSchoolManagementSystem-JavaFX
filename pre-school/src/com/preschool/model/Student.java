@@ -17,7 +17,9 @@ public class Student {
     private String section;
     private String status;
 
-    // Constructor
+    /**
+     * Model class representing a student
+     */
     public Student() {}
 
     public Student(int studentId, String firstName, String lastName, LocalDate dateOfBirth,

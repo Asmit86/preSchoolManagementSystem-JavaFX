@@ -12,6 +12,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
 import java.util.Optional;
 
+
+/**
+ * Controller class responsible for handling UI events
+ * and connecting the interface with backend logic
+ */
 public class TeacherManagementController {
 
     @FXML private TableView<Teacher> teacherTable;
@@ -22,6 +27,7 @@ public class TeacherManagementController {
     @FXML private TableColumn<Teacher, String> qualificationColumn;
     @FXML private TableColumn<Teacher, String> statusColumn;
 
+    /* input field for teacher details */
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
     @FXML private DatePicker dobPicker;

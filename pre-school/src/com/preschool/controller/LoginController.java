@@ -1,26 +1,31 @@
 package com.preschool.controller;
 
 import com.preschool.MainApp;
+import com.preschool.dao.UserDAO;
 import com.preschool.model.User;
-import com.preschool.util.DatabaseUtil;
 import com.preschool.util.SessionManager;
-import com.preschool.util.UserFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 
-import java.sql.*;
 
+/**
+ * Controller class for handling login functionality
+ */
 public class LoginController {
 
-    @FXML private TextField usernameField;
+    @FXML private TextField     usernameField;
     @FXML private PasswordField passwordField;
-    @FXML private Label errorLabel;
+    @FXML private Label         errorLabel;
+
+    // UserDAO handles all database access — no SQL in this controller
+    private final UserDAO userDAO = new UserDAO();
 
     @FXML
     public void initialize() {
         errorLabel.setVisible(false);
 
+        // Allow login by pressing Enter in the password field
         passwordField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) handleLogin();
         });
@@ -36,7 +41,7 @@ public class LoginController {
             return;
         }
 
-        User user = authenticate(username, password);
+        User user = userDAO.findByCredentials(username, password);
 
         if (user != null) {
             SessionManager.getInstance().login(user);
@@ -44,44 +49,6 @@ public class LoginController {
         } else {
             showError("Invalid username or password.");
         }
-    }
-
-    private User authenticate(String username, String password) {
-
-        String sql = "SELECT user_id, username, full_name, role, password, teacher_id FROM users WHERE username=?";
-
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-
-                String storedPassword = rs.getString("password");
-
-                //Plain text comparison
-                if (password.equals(storedPassword)) {
-
-                    int teacherId = rs.getInt("teacher_id");
-                    if (rs.wasNull()) teacherId = -1;
-
-                    return UserFactory.create(
-                            rs.getInt("user_id"),
-                            rs.getString("username"),
-                            rs.getString("full_name"),
-                            rs.getString("role"),
-                            teacherId
-                    );
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showError("Database error: " + e.getMessage());
-        }
-
-        return null;
     }
 
     private void showError(String msg) {
