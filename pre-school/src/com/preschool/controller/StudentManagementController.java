@@ -185,6 +185,20 @@ public class StudentManagementController {
             return false;
         }
 
+        // Phone validation
+        String phone = guardianPhoneField.getText().trim();
+        if (phone.length() < 10) {
+            showError("Phone number must be at least 10 digits.");
+            return false;
+        }
+
+        // Email validation
+        String email = guardianEmailField.getText().trim();
+        if (!email.isEmpty() && (!email.contains("@") || !email.endsWith(".com"))) {
+            showError("Invalid email format.");
+            return false;
+        }
+
         return true;
     }
 

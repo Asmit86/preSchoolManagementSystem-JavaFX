@@ -1,14 +1,14 @@
 
- /*  Pre-School Management System - JavaFX Stylesheet */
+ /*  Pre-School Management System: JavaFX Stylesheet */
 
-/* ── Global ── */
+/* Global */
 .root {
     -fx-font-family: "Arial";
     -fx-font-size: 13px;
     -fx-background-color: #f4f6f9;
 }
 
-/* ── Login ── */
+/*  Login  */
 .login-container {
     -fx-background-color: #f4f6f9;
     -fx-min-width: 420px;
@@ -41,12 +41,12 @@
     -fx-font-size: 12px;
 }
 
-/* ── Dashboard layout ── */
+/*  Dashboard layout  */
 .dashboard-container {
     -fx-background-color: #f4f6f9;
 }
 
-/* ── Sidebar ── */
+/*  Sidebar  */
 .sidebar {
     -fx-background-color: #2c3e50;
     -fx-min-width: 220px;
@@ -83,7 +83,7 @@
     -fx-background-color: #a93226;
 }
 
-/* ── Top bar ── */
+/*  Top bar  */
 .top-bar {
     -fx-background-color: white;
     -fx-border-color: #ddd;
@@ -105,7 +105,7 @@
     -fx-font-size: 11px;
 }
 
-/* ── Stat cards (sidebar overview) ── */
+/*  Stat cards (sidebar overview)  */
 .stats-container {
     -fx-background-color: #34495e;
     -fx-background-radius: 4px;
@@ -126,13 +126,13 @@
     -fx-font-size: 13px;
 }
 
-/* ── Content area ── */
+/*  Content area  */
 .content-area {
     -fx-background-color: #f4f6f9;
     -fx-padding: 20px;
 }
 
-/* ── Card (white box with shadow ) ── */
+/*  Card (white box with shadow )  */
 .card {
     -fx-background-color: white;
     -fx-background-radius: 6px;
@@ -155,7 +155,7 @@
     -fx-text-fill: #2c3e50;
 }
 
-/* ── Form fields ── */
+/*  Form fields  */
 .text-field, .password-field, .text-area, .date-picker, .combo-box {
     -fx-background-color: white;
     -fx-border-color: #cccccc;
@@ -174,7 +174,7 @@
     -fx-font-size: 12px;
 }
 
-/* ── Buttons ── */
+/*  Buttons  */
 .button {
     -fx-cursor: hand;
     -fx-background-radius: 4px;
@@ -225,7 +225,7 @@
     -fx-background-color: #c0392b;
 }
 
-/* ── TableView ── */
+/*  TableView  */
 .table-view {
     -fx-background-color: white;
     -fx-border-color: #dddddd;
@@ -266,12 +266,12 @@
     -fx-padding: 8px 10px;
 }
 
-/* ── Separator ── */
+/*  Separator  */
 .separator .line {
     -fx-border-color: #dddddd;
 }
 
-/* ── ScrollPane ── */
+/*  ScrollPane  */
 .scroll-pane {
     -fx-background-color: transparent;
     -fx-background: transparent;
@@ -280,7 +280,7 @@
     -fx-background-color: transparent;
 }
 
-/* ── SplitPane ── */
+/*  SplitPane  */
 .split-pane {
     -fx-background-color: transparent;
     -fx-padding: 0;
@@ -290,7 +290,7 @@
     -fx-padding: 0 1 0 1;
 }
 
-/* ── TabPane ── */
+/*  TabPane  */
 .tab-pane {
     -fx-background-color: transparent;
 }
@@ -318,7 +318,7 @@
     -fx-background-color: white;
 }
 
-/* ── Charts ── */
+/*  Charts  */
 .chart {
     -fx-background-color: white;
     -fx-padding: 10px;
@@ -329,7 +329,7 @@
     -fx-text-fill: #2c3e50;
 }
 
-/* ── Misc ── */
+/*  Misc  */
 .info-label {
     -fx-text-fill: #888888;
     -fx-font-size: 11px;

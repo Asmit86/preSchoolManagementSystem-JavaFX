@@ -156,17 +156,33 @@ public class TeacherManagementController {
                 || phoneField.getText().trim().isEmpty() || addressArea.getText().trim().isEmpty()
                 || qualificationField.getText().trim().isEmpty() || joiningDatePicker.getValue() == null
                 || usernameField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
-            showError("Please fill all required fields (including username and password).");
+            showError("Please fill all required fields.");
             return false;
         }
+
+        // Phone validation
+        if (phoneField.getText().trim().length() < 10) {
+            showError("Phone number must be at least 10 digits.");
+            return false;
+        }
+
+        // Email validation
+        String email = emailField.getText().trim();
+        if (!email.isEmpty() && (!email.contains("@") || !email.endsWith(".com"))) {
+            showError("Invalid email format.");
+            return false;
+        }
+
+        // Password validation
         if (passwordField.getText().trim().length() < 6) {
-            showError("Password must be at least 6 characters long.");
+            showError("Password must be at least 6 characters.");
             return false;
         }
+
         return true;
     }
 
-    /** Partial validation used when updating (login credentials not re-entered). */
+    /** Partial validation used when updating (login credentials not entered). */
     private boolean validateForUpdate() {
         if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty()
                 || dobPicker.getValue() == null || genderCombo.getValue() == null
@@ -175,6 +191,18 @@ public class TeacherManagementController {
             showError("Please fill all required fields.");
             return false;
         }
+
+        if (phoneField.getText().trim().length() < 10) {
+            showError("Phone number must be at least 10 digits.");
+            return false;
+        }
+
+        String email = emailField.getText().trim();
+        if (!email.isEmpty() && (!email.contains("@") || !email.endsWith(".com"))) {
+            showError("Invalid email format.");
+            return false;
+        }
+
         return true;
     }
 
