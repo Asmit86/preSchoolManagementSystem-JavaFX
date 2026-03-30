@@ -16,15 +16,14 @@ public class Student {
     private Integer classId;
     private String section;
     private String status;
+    private String behaviour;
 
-    /**
-     * Model class representing a student
-     */
     public Student() {}
 
     public Student(int studentId, String firstName, String lastName, LocalDate dateOfBirth,
                    String gender, String guardianName, String guardianPhone, String guardianEmail,
-                   String address, LocalDate enrollmentDate, Integer classId, String section, String status) {
+                   String address, LocalDate enrollmentDate, Integer classId, String section,
+                   String status, String behaviour) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,9 +37,9 @@ public class Student {
         this.classId = classId;
         this.section = section;
         this.status = status;
+        this.behaviour = behaviour;
     }
 
-    // Getters and Setters
     public int getStudentId() { return studentId; }
     public void setStudentId(int studentId) { this.studentId = studentId; }
 
@@ -81,4 +80,7 @@ public class Student {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getBehaviour() { return behaviour; }
+    public void setBehaviour(String behaviour) { this.behaviour = behaviour; }
 }

@@ -18,7 +18,7 @@
     <HBox spacing="12">
         <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
             <Label text="Total Students"  styleClass="form-label"/>
-            <Label fx:id="totalStudentsLabel"  text="0"
+            <Label fx:id="totalStudentsLabel" text="0"
                    style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#3498db;"/>
         </VBox>
         <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
@@ -28,12 +28,12 @@
         </VBox>
         <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
             <Label text="Total Teachers"  styleClass="form-label"/>
-            <Label fx:id="totalTeachersLabel"  text="0"
+            <Label fx:id="totalTeachersLabel" text="0"
                    style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#9b59b6;"/>
         </VBox>
         <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
             <Label text="Present Today"   styleClass="form-label"/>
-            <Label fx:id="presentTodayLabel"   text="0"
+            <Label fx:id="presentTodayLabel" text="0"
                    style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#e67e22;"/>
         </VBox>
         <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
@@ -43,46 +43,53 @@
         </VBox>
         <VBox styleClass="card" alignment="CENTER" HBox.hgrow="ALWAYS" spacing="6">
             <Label text="Pending"         styleClass="form-label"/>
-            <Label fx:id="totalPendingLabel"   text="Rs.0"
+            <Label fx:id="totalPendingLabel" text="Rs.0"
                    style="-fx-font-size:16px; -fx-font-weight:bold; -fx-text-fill:#e74c3c;"/>
         </VBox>
     </HBox>
 
     <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
 
-        <!-- Student Report -->
+        <!-- ── Student Report ── -->
         <Tab text="Student Report">
             <VBox styleClass="card" spacing="12">
                 <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <Label text="Filter:" styleClass="form-label"/>
                     <ComboBox fx:id="studentStatusFilter" onAction="#handleStudentReportFilter" prefWidth="150" prefHeight="34"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Export CSV"  onAction="#handleExportStudentCSV"  styleClass="secondary-button" prefHeight="34"/>
+                    <Button text="Export Docs" onAction="#handleExportStudentDocs" styleClass="secondary-button" prefHeight="34"/>
                 </HBox>
-                <TableView fx:id="studentReportTable" VBox.vgrow="ALWAYS" prefHeight="380">
+                <TableView fx:id="studentReportTable" VBox.vgrow="ALWAYS" prefHeight="360">
                     <columns>
-                        <TableColumn fx:id="srIdCol"       text="ID"       prefWidth="60"/>
-                        <TableColumn fx:id="srNameCol"     text="Name"     prefWidth="180"/>
-                        <TableColumn fx:id="srGenderCol"   text="Gender"   prefWidth="80"/>
-                        <TableColumn fx:id="srClassCol"    text="Class"    prefWidth="90"/>
-                        <TableColumn fx:id="srGuardianCol" text="Guardian" prefWidth="170"/>
-                        <TableColumn fx:id="srStatusCol"   text="Status"   prefWidth="90"/>
+                        <TableColumn fx:id="srIdCol"        text="ID"        prefWidth="50"/>
+                        <TableColumn fx:id="srNameCol"      text="Name"      prefWidth="150"/>
+                        <TableColumn fx:id="srGenderCol"    text="Gender"    prefWidth="70"/>
+                        <TableColumn fx:id="srClassCol"     text="Class"     prefWidth="110"/>
+                        <TableColumn fx:id="srGuardianCol"  text="Guardian"  prefWidth="150"/>
+                        <TableColumn fx:id="srBehaviourCol" text="Behaviour" prefWidth="110"/>
+                        <TableColumn fx:id="srStatusCol"    text="Status"    prefWidth="80"/>
                     </columns>
                     <placeholder><Label text="No records."/></placeholder>
                 </TableView>
             </VBox>
         </Tab>
 
-        <!-- Attendance Report -->
+        <!-- ── Attendance Report ── -->
         <Tab text="Attendance Report">
             <VBox styleClass="card" spacing="12">
                 <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <Label text="From:" styleClass="form-label"/>
                     <DatePicker fx:id="attFromDate" prefWidth="160" prefHeight="34"/>
-                    <Label text="To:"   styleClass="form-label"/>
-                    <DatePicker fx:id="attToDate"   prefWidth="160" prefHeight="34"/>
+                    <Label text="To:" styleClass="form-label"/>
+                    <DatePicker fx:id="attToDate" prefWidth="160" prefHeight="34"/>
                     <Button text="Generate" onAction="#handleLoadAttendanceReport"
                             styleClass="primary-button" prefHeight="34"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Export CSV"  onAction="#handleExportAttendanceCSV"  styleClass="secondary-button" prefHeight="34"/>
+                    <Button text="Export Docs" onAction="#handleExportAttendanceDocs" styleClass="secondary-button" prefHeight="34"/>
                 </HBox>
                 <SplitPane dividerPositions="0.55" VBox.vgrow="ALWAYS">
                     <TableView fx:id="attReportTable">
@@ -98,13 +105,16 @@
             </VBox>
         </Tab>
 
-        <!-- Fee Report -->
+        <!-- ── Fee Report ── -->
         <Tab text="Fee Report">
             <VBox styleClass="card" spacing="12">
                 <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <Label text="Filter:" styleClass="form-label"/>
                     <ComboBox fx:id="feeStatusFilter" onAction="#handleFeeReportFilter" prefWidth="150" prefHeight="34"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Export CSV"  onAction="#handleExportFeeCSV"  styleClass="secondary-button" prefHeight="34"/>
+                    <Button text="Export Docs" onAction="#handleExportFeeDocs" styleClass="secondary-button" prefHeight="34"/>
                 </HBox>
                 <SplitPane dividerPositions="0.55" VBox.vgrow="ALWAYS">
                     <TableView fx:id="feeReportTable">
@@ -125,5 +135,31 @@
                 </SplitPane>
             </VBox>
         </Tab>
+
+        <!-- ── Teacher Report ── -->
+        <Tab text="Teacher Report">
+            <VBox styleClass="card" spacing="12">
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Button text="Refresh" onAction="#handleLoadTeacherReport"
+                            styleClass="primary-button" prefHeight="34"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Export CSV"  onAction="#handleExportTeacherCSV"  styleClass="secondary-button" prefHeight="34"/>
+                    <Button text="Export Docs" onAction="#handleExportTeacherDocs" styleClass="secondary-button" prefHeight="34"/>
+                </HBox>
+                <TableView fx:id="teacherReportTable" VBox.vgrow="ALWAYS" prefHeight="380">
+                    <columns>
+                        <TableColumn fx:id="trIdCol"     text="ID"            prefWidth="50"/>
+                        <TableColumn fx:id="trNameCol"   text="Name"          prefWidth="160"/>
+                        <TableColumn fx:id="trQualCol"   text="Qualification" prefWidth="130"/>
+                        <TableColumn fx:id="trPhoneCol"  text="Phone"         prefWidth="120"/>
+                        <TableColumn fx:id="trClassCol"  text="Classes"       prefWidth="180"/>
+                        <TableColumn fx:id="trStatusCol" text="Status"        prefWidth="80"/>
+                    </columns>
+                    <placeholder><Label text="No teachers found."/></placeholder>
+                </TableView>
+            </VBox>
+        </Tab>
+
     </TabPane>
 </VBox>

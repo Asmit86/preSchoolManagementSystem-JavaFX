@@ -9,23 +9,16 @@ public class Admin extends User {
     }
 
     @Override
-    public String getDashboardTitle() {
-        return "Admin Dashboard";
-    }
+    public String getDashboardTitle() { return "Admin Dashboard"; }
 
     @Override
     public List<String> getPermissions() {
-        // Admin has access to all modules including Fees
-        return List.of("Teachers", "Students", "Attendance", "Fees", "Reports");
+        return List.of("Teachers", "Students", "Attendance", "Fees", "Reports", "Classes");
     }
 
     @Override
-    public boolean canAccessModule(String moduleName) {
-        return true; // Admin has full access
-    }
+    public boolean canAccessModule(String moduleName) { return true; }
 
     @Override
-    public String getRoleLabel() {
-        return "Admin";
-    }
+    public String getRoleLabel() { return "Admin"; }
 }

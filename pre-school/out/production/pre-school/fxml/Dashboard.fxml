@@ -8,7 +8,6 @@
             xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.preschool.controller.DashboardController">
 
-    <!-- ── Sidebar ── -->
     <left>
         <VBox styleClass="sidebar" spacing="6" prefWidth="220">
             <padding><Insets top="20" right="15" bottom="20" left="15"/></padding>
@@ -18,7 +17,6 @@
             </Label>
             <Separator style="-fx-background-color:#34495e;"/>
 
-            <!-- Stats -->
             <VBox styleClass="stats-container" spacing="5">
                 <Label text="OVERVIEW" styleClass="section-title">
                     <font><Font name="Arial Bold" size="11"/></font>
@@ -47,19 +45,18 @@
 
             <Separator style="-fx-background-color:#34495e;"/>
 
-            <!-- Nav -->
             <Button text="  Student Management"  onAction="#handleStudentsButton"   styleClass="nav-button" prefWidth="190" prefHeight="42"/>
-            <Button fx:id="teachersButton"  text="  Teacher Management"  onAction="#handleTeachersButton"   styleClass="nav-button" prefWidth="190" prefHeight="42"/>
-            <Button text="  Attendance"            onAction="#handleAttendanceButton" styleClass="nav-button" prefWidth="190" prefHeight="42"/>
-            <Button fx:id="feesButton"      text="  Fee Management"      onAction="#handleFeesButton"       styleClass="nav-button" prefWidth="190" prefHeight="42"/>
-            <Button fx:id="reportsButton"   text="  Reports"             onAction="#handleReportsButton"    styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button fx:id="teachersButton" text="  Teacher Management"  onAction="#handleTeachersButton"   styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button fx:id="classesButton"  text="  Classes &amp; Sections" onAction="#handleClassesButton" styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button text="  Attendance"           onAction="#handleAttendanceButton" styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button fx:id="feesButton" text="  Fee Management"         onAction="#handleFeesButton"       styleClass="nav-button" prefWidth="190" prefHeight="42"/>
+            <Button fx:id="reportsButton" text="  Reports"             onAction="#handleReportsButton"    styleClass="nav-button" prefWidth="190" prefHeight="42"/>
 
             <Region VBox.vgrow="ALWAYS"/>
             <Button text="  Logout" onAction="#handleLogout" styleClass="logout-button" prefWidth="190" prefHeight="42"/>
         </VBox>
     </left>
 
-    <!-- ── Main content ── -->
     <top>
         <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="10">
             <Label text="Dashboard" styleClass="app-title">
@@ -73,6 +70,5 @@
         </HBox>
     </top>
 
-    <!-- center filled dynamically -->
     <center/>
 </BorderPane>

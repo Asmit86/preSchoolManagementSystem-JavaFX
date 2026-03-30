@@ -6,30 +6,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
-
-/**
- * Main entry point of the Preschool Management System
- * This class launches the JavaFX application
- */
 public class MainApp extends Application {
 
-    private static Stage primaryStage;      // main stage used across the app
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage stage) {
         try {
-            primaryStage = stage;         // store primary stage
-            showLoginScreen();            // load first screen
+            primaryStage = stage;
+            showLoginScreen();
         } catch (Exception e) {
-            e.printStackTrace();          // print error if app fails to start
+            e.printStackTrace();
         }
     }
 
 
-    /**
-     * Loads the login screen
-     */
     public static void showLoginScreen() {
         try {
             Parent root = FXMLLoader.load(MainApp.class.getResource("/fxml/Login.fxml"));
@@ -47,9 +38,6 @@ public class MainApp extends Application {
         }
     }
 
-    /**
-     * Loads the Dashboard after successful login
-     */
     public static void showDashboard() {
         try {
             Parent root = FXMLLoader.load(MainApp.class.getResource("/fxml/Dashboard.fxml"));
@@ -70,5 +58,5 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }      // launch JavaFX app
+    }
 }

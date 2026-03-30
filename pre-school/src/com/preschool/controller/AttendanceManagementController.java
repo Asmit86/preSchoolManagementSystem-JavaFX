@@ -12,11 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
 import java.util.List;
 
-
-/**
- * Controller class responsible for handling UI events
- * and connecting the interface with backend logic
- */
 public class AttendanceManagementController {
 
     // Mark Attendance tab
@@ -70,6 +65,44 @@ public class AttendanceManagementController {
                 }
             }
         });
+
+        // ---------------------------------------------------------------
+        // FIX: Make remarks column editable with a TextField
+        // ---------------------------------------------------------------
+        markRemarksColumn.setCellFactory(col -> new TableCell<>() {
+            private final TextField textField = new TextField();
+            {
+                // Save remark when the user clicks away (focus lost)
+                textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                    if (!isNowFocused) {
+                        Attendance a = getTableRow().getItem();
+                        if (a != null) {
+                            a.setRemarks(textField.getText());
+                        }
+                    }
+                });
+
+                // Also save remark when the user presses Enter
+                textField.setOnAction(e -> {
+                    Attendance a = getTableRow().getItem();
+                    if (a != null) {
+                        a.setRemarks(textField.getText());
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    textField.setText(item != null ? item : "");
+                    setGraphic(textField);
+                }
+            }
+        });
+        // ---------------------------------------------------------------
 
         markTable.setItems(markList);
         attendanceDatePicker.setValue(LocalDate.now());
@@ -141,7 +174,6 @@ public class AttendanceManagementController {
         if (from.isAfter(to)) { showError("From date cannot be after To date."); return; }
 
         historyList.clear();
-        // Iterate each day in range and collect records
         LocalDate cursor = from;
         while (!cursor.isAfter(to)) {
             List<Attendance> dayRecords = attendanceDAO.getAttendanceByDate(cursor);

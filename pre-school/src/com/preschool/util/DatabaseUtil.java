@@ -4,13 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
-/**
- * Utility class for database connection
- */
 public class DatabaseUtil {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/preschoolSystemDB";
+    private static final String URL = "jdbc:mysql://localhost:3306/preschoolUpdatedDB";
     private static final String USER = "root";
     private static final String PASSWORD = "Divyana@2021";
 

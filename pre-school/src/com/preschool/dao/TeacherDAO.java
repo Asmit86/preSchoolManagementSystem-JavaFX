@@ -2,12 +2,11 @@ package com.preschool.dao;
 
 import com.preschool.model.Teacher;
 import com.preschool.util.DatabaseUtil;
+import com.preschool.util.PasswordUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class TeacherDAO {
 
@@ -83,7 +82,7 @@ public class TeacherDAO {
             try (PreparedStatement ps = conn.prepareStatement(userQuery)) {
 
                 ps.setString(1, username);
-                ps.setString(2, password); // plain text
+                ps.setString(2, PasswordUtil.password(password));
                 ps.setString(3, teacher.getFullName());
                 ps.setInt(4, teacherId);
 

@@ -5,7 +5,7 @@ import java.util.List;
 public class TeacherUser extends User {
 
     private static final List<String> PERMISSIONS = List.of(
-            "Students", "Attendance", "Reports"
+            "Students", "Attendance", "Classes"
     );
 
     private final int teacherId;

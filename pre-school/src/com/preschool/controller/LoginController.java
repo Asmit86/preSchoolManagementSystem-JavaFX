@@ -8,10 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 
-
-/**
- * Controller class for handling login functionality
- */
 public class LoginController {
 
     @FXML private TextField     usernameField;

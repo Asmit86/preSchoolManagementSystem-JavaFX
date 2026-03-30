@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="content-area"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.preschool.controller.ClassManagementController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Class &amp; Section Management" styleClass="header-label">
+        <font><Font name="Arial Bold" size="20"/></font>
+    </Label>
+
+    <!-- Class form + Class table -->
+    <VBox styleClass="card" spacing="12">
+        <Label text="Class Details" styleClass="card-title"/>
+
+        <HBox spacing="10">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Class Name" styleClass="form-label"/>
+                <TextField fx:id="classNameField" promptText="e.g. Nursery, LKG, UKG" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Section" styleClass="form-label"/>
+                <TextField fx:id="sectionField" promptText="e.g. A, B" prefHeight="34"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Assign Teacher" styleClass="form-label"/>
+                <ComboBox fx:id="teacherCombo" promptText="Select Teacher" prefHeight="34" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="8">
+            <Button text="Add Class"      onAction="#handleAddClass"     styleClass="primary-button"   prefHeight="34"/>
+            <Button fx:id="updateButton"  text="Update"                  onAction="#handleUpdateClass"  styleClass="success-button"   prefHeight="34" disable="true"/>
+            <Button fx:id="deleteButton"  text="Delete"                  onAction="#handleDeleteClass"  styleClass="danger-button"    prefHeight="34" disable="true"/>
+            <Button text="Assign Teacher" onAction="#handleAssignTeacher" styleClass="secondary-button" prefHeight="34"/>
+            <Button text="Clear"          onAction="#handleClearFields"   styleClass="secondary-button" prefHeight="34"/>
+        </HBox>
+
+        <TableView fx:id="classTable" prefHeight="180">
+            <columns>
+                <TableColumn fx:id="idColumn"           text="ID"       prefWidth="50"/>
+                <TableColumn fx:id="classNameColumn"    text="Class"    prefWidth="130"/>
+                <TableColumn fx:id="sectionColumn"      text="Section"  prefWidth="80"/>
+                <TableColumn fx:id="teacherColumn"      text="Teacher"  prefWidth="200"/>
+                <TableColumn fx:id="studentCountColumn" text="Students" prefWidth="90"/>
+            </columns>
+            <placeholder><Label text="No classes found."/></placeholder>
+        </TableView>
+    </VBox>
+
+</VBox>

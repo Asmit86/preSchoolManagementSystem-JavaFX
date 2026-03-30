@@ -5,8 +5,11 @@ package com.preschool.util;
  */
 public class PasswordUtil {
 
-
-    public static String hashPassword(String password) {
+    /**
+     * Returns the password as-is (plain text).
+     * Replace the body with a hashing algorithm (e.g. BCrypt) for production use.
+     */
+    public static String password(String password) {
         return password;
     }
 

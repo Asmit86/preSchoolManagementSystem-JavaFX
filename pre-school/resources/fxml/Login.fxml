@@ -4,8 +4,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
-<!-- Login Screen UI -->
 <VBox alignment="CENTER" styleClass="login-container"
       xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.preschool.controller.LoginController"
@@ -20,12 +18,10 @@
         <Separator/>
 
         <Label text="Username:" styleClass="login-field-label"/>
-        <!-- Username input field -->
         <TextField fx:id="usernameField" promptText="Enter username"
                    prefWidth="280" prefHeight="36"/>
 
         <Label text="Password:" styleClass="login-field-label"/>
-        <!-- Password input field -->
         <PasswordField fx:id="passwordField" promptText="Enter password"
                        prefWidth="280" prefHeight="36"/>
 

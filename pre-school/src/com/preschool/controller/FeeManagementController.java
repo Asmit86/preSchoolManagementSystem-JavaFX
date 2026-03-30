@@ -15,11 +15,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-
-/**
- * Controller class responsible for handling UI events
- * and connecting the interface with backend logic
- */
 public class FeeManagementController {
 
     @FXML private TableView<Fee> feeTable;

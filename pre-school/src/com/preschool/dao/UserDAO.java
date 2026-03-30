@@ -2,6 +2,7 @@ package com.preschool.dao;
 
 import com.preschool.model.User;
 import com.preschool.util.DatabaseUtil;
+import com.preschool.util.PasswordUtil;
 import com.preschool.util.UserFactory;
 
 import java.sql.Connection;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 public class UserDAO {
 
     /**
-     * Looks up a user by username and verifies the plain text password
+     * Looks up a user by username, verifies the password via PasswordUtil,
      * and returns the appropriate User type (Admin or TeacherUser).
      * Returns null if the credentials are invalid or a DB error occurs.
      */
@@ -30,8 +31,7 @@ public class UserDAO {
             if (rs.next()) {
                 String storedPassword = rs.getString("password");
 
-                // Plain-text comparison (replace with BCrypt for production)
-                if (password.equals(storedPassword)) {
+                if (PasswordUtil.verifyPassword(password, storedPassword)) {
                     int teacherId = rs.getInt("teacher_id");
                     if (rs.wasNull()) teacherId = -1;
 

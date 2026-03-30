@@ -12,11 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
 import java.util.Optional;
 
-
-/**
- * Controller class responsible for handling UI events
- * and connecting the interface with backend logic
- */
 public class TeacherManagementController {
 
     @FXML private TableView<Teacher> teacherTable;
@@ -27,7 +22,6 @@ public class TeacherManagementController {
     @FXML private TableColumn<Teacher, String> qualificationColumn;
     @FXML private TableColumn<Teacher, String> statusColumn;
 
-    /* input field for teacher details */
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
     @FXML private DatePicker dobPicker;
@@ -156,33 +150,26 @@ public class TeacherManagementController {
                 || phoneField.getText().trim().isEmpty() || addressArea.getText().trim().isEmpty()
                 || qualificationField.getText().trim().isEmpty() || joiningDatePicker.getValue() == null
                 || usernameField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()) {
-            showError("Please fill all required fields.");
+            showError("Please fill all required fields (including username and password).");
             return false;
         }
-
-        // Phone validation
-        if (phoneField.getText().trim().length() < 10) {
-            showError("Phone number must be at least 10 digits.");
+        if (!phoneField.getText().trim().matches("\\d{10}")) {
+            showError("Phone number must be exactly 10 digits.");
             return false;
         }
-
-        // Email validation
         String email = emailField.getText().trim();
-        if (!email.isEmpty() && (!email.contains("@") || !email.endsWith(".com"))) {
-            showError("Invalid email format.");
+        if (!email.isEmpty() && (!email.contains("@") || !email.contains(".com"))) {
+            showError("Email must contain '@' and '.com'.");
             return false;
         }
-
-        // Password validation
         if (passwordField.getText().trim().length() < 6) {
-            showError("Password must be at least 6 characters.");
+            showError("Password must be at least 6 characters long.");
             return false;
         }
-
         return true;
     }
 
-    /** Partial validation used when updating (login credentials not entered). */
+    /** Partial validation used when updating (login credentials not re-entered). */
     private boolean validateForUpdate() {
         if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty()
                 || dobPicker.getValue() == null || genderCombo.getValue() == null
@@ -191,18 +178,15 @@ public class TeacherManagementController {
             showError("Please fill all required fields.");
             return false;
         }
-
-        if (phoneField.getText().trim().length() < 10) {
-            showError("Phone number must be at least 10 digits.");
+        if (!phoneField.getText().trim().matches("\\d{10}")) {
+            showError("Phone number must be exactly 10 digits.");
             return false;
         }
-
         String email = emailField.getText().trim();
-        if (!email.isEmpty() && (!email.contains("@") || !email.endsWith(".com"))) {
-            showError("Invalid email format.");
+        if (!email.isEmpty() && (!email.contains("@") || !email.contains(".com"))) {
+            showError("Email must contain '@' and '.com'.");
             return false;
         }
-
         return true;
     }
 
