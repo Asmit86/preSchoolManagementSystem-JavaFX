@@ -7,8 +7,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * FeeDAO handles all database operations related to Fee management.
+ * Includes CRUD operations and financial calculations like totals and pending fees.
+ */
 public class FeeDAO {
 
+    /** Insert a new fee record into the database */
     public boolean addFee(Fee fee) {
         String query = "INSERT INTO fees (student_id, fee_month, fee_year, amount, paid_amount, status, payment_date, remarks) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -26,6 +31,7 @@ public class FeeDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Update payment details of an existing fee record */
     public boolean updateFee(Fee fee) {
         String query = "UPDATE fees SET paid_amount=?, status=?, payment_date=?, remarks=? WHERE fee_id=?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -39,6 +45,7 @@ public class FeeDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Delete a fee record by its ID */
     public boolean deleteFee(int feeId) {
         String query = "DELETE FROM fees WHERE fee_id=?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -48,6 +55,7 @@ public class FeeDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Retrieve all fee records with student name included */
     public List<Fee> getAllFees() {
         List<Fee> list = new ArrayList<>();
         String query = "SELECT f.*, CONCAT(s.first_name,' ',s.last_name) AS student_name " +
@@ -60,6 +68,7 @@ public class FeeDAO {
         return list;
     }
 
+    /** Filter fee records based on payment status (Paid / Pending) */
     public List<Fee> getFeesByStatus(String status) {
         List<Fee> list = new ArrayList<>();
         String query = "SELECT f.*, CONCAT(s.first_name,' ',s.last_name) AS student_name " +
@@ -74,6 +83,7 @@ public class FeeDAO {
         return list;
     }
 
+    /** Search fee records using student name or fee month */
     public List<Fee> searchFees(String keyword) {
         List<Fee> list = new ArrayList<>();
         String query = "SELECT f.*, CONCAT(s.first_name,' ',s.last_name) AS student_name " +
@@ -89,6 +99,7 @@ public class FeeDAO {
         return list;
     }
 
+    /** Count number of unpaid or partially paid fee records */
     public int getPendingFeeCount() {
         String query = "SELECT COUNT(*) FROM fees WHERE status != 'Paid'";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -99,6 +110,7 @@ public class FeeDAO {
         return 0;
     }
 
+    /** Calculate total amount collected from all fees */
     public double getTotalCollected() {
         String query = "SELECT COALESCE(SUM(paid_amount), 0) FROM fees";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -109,6 +121,7 @@ public class FeeDAO {
         return 0;
     }
 
+    /** Calculate total pending amount (amount - paid_amount) */
     public double getTotalPending() {
         String query = "SELECT COALESCE(SUM(amount - paid_amount), 0) FROM fees WHERE status != 'Paid'";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -119,6 +132,10 @@ public class FeeDAO {
         return 0;
     }
 
+    /**
+     * Helper method: Maps ResultSet row to Fee object
+     * Used to avoid repeated mapping logic in all methods
+     */
     private Fee extract(ResultSet rs) throws SQLException {
         Fee f = new Fee();
         f.setFeeId(rs.getInt("fee_id"));

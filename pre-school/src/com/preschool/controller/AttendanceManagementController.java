@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AttendanceManagementController {
 
-    // Mark Attendance tab
+    // ---------------- Mark Attendance Tab UI Components ----------------
     @FXML private DatePicker attendanceDatePicker;
     @FXML private TableView<Attendance> markTable;
     @FXML private TableColumn<Attendance, String> markNameColumn;
@@ -22,7 +22,7 @@ public class AttendanceManagementController {
     @FXML private TableColumn<Attendance, String> markRemarksColumn;
     @FXML private Label attendanceSummaryLabel;
 
-    // View History tab
+    // ---------------- Attendance History Tab UI Components ----------------
     @FXML private DatePicker fromDatePicker;
     @FXML private DatePicker toDatePicker;
     @FXML private TableView<Attendance> historyTable;
@@ -102,12 +102,12 @@ public class AttendanceManagementController {
                 }
             }
         });
-        // ---------------------------------------------------------------
+
 
         markTable.setItems(markList);
         attendanceDatePicker.setValue(LocalDate.now());
 
-        // History tab setup
+        // ---------------- History Tab Table Binding ----------------
         historyDateColumn.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getAttendanceDate() != null ?
                         cd.getValue().getAttendanceDate().toString() : ""));
@@ -116,6 +116,7 @@ public class AttendanceManagementController {
         historyRemarksColumn.setCellValueFactory(new PropertyValueFactory<>("remarks"));
         historyTable.setItems(historyList);
 
+        // Default date range for history view (current month)
         fromDatePicker.setValue(LocalDate.now().withDayOfMonth(1));
         toDatePicker.setValue(LocalDate.now());
 
@@ -127,6 +128,7 @@ public class AttendanceManagementController {
         loadAttendanceSheet();
     }
 
+    // Loads attendance sheet for selected date from database
     private void loadAttendanceSheet() {
         LocalDate date = attendanceDatePicker.getValue();
         if (date == null) return;
@@ -135,6 +137,7 @@ public class AttendanceManagementController {
         updateSummary();
     }
 
+    // Updates summary label (Present/Absent/Leave count)
     private void updateSummary() {
         long present = markList.stream().filter(a -> "Present".equals(a.getStatus())).count();
         long absent  = markList.stream().filter(a -> "Absent".equals(a.getStatus())).count();
@@ -144,6 +147,7 @@ public class AttendanceManagementController {
                         "  |  Absent: " + absent + "  |  Leave: " + leave);
     }
 
+    // Saves attendance records into database
     @FXML
     private void handleSaveAttendance() {
         if (markList.isEmpty()) {
@@ -159,6 +163,7 @@ public class AttendanceManagementController {
         showSuccess("Attendance saved for " + saved + " students on " + date);
     }
 
+    // Marks all students as Present (bulk action for convenience)
     @FXML
     private void handleMarkAllPresent() {
         markList.forEach(a -> a.setStatus("Present"));
@@ -166,6 +171,7 @@ public class AttendanceManagementController {
         updateSummary();
     }
 
+    // Loads attendance history between selected dates
     @FXML
     private void handleViewHistory() {
         LocalDate from = fromDatePicker.getValue();
@@ -174,6 +180,7 @@ public class AttendanceManagementController {
         if (from.isAfter(to)) { showError("From date cannot be after To date."); return; }
 
         historyList.clear();
+        // Iterates through each day in range and fetches records
         LocalDate cursor = from;
         while (!cursor.isAfter(to)) {
             List<Attendance> dayRecords = attendanceDAO.getAttendanceByDate(cursor);
@@ -184,6 +191,7 @@ public class AttendanceManagementController {
         if (historyList.isEmpty()) showError("No attendance records found for the selected range.");
     }
 
+    // ---------------- UI Alert Helpers ----------------
     private void showSuccess(String msg) {
         new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK).showAndWait();
     }

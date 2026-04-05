@@ -17,6 +17,7 @@ public class SchoolClass {
         this.teacherName = teacherName;
     }
 
+    // Getters and Setters
     public int getClassId() { return classId; }
     public void setClassId(int classId) { this.classId = classId; }
 

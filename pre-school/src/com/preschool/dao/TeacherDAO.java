@@ -8,9 +8,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TeacherDAO handles all database operations related to Teacher management.
+ * It also manages linked user login creation using transactional processing.
+ */
 public class TeacherDAO {
 
-    //CHECK IF USERNAME EXISTS
+    /** Check whether a username already exists in the users table */
     public boolean usernameExists(String username) {
 
         String query = "SELECT COUNT(*) FROM users WHERE username = ?";
@@ -32,7 +36,10 @@ public class TeacherDAO {
         return false;
     }
 
-    // ADD TEACHER + LOGIN (TRANSACTION)
+    /**
+     * Add a new teacher AND create login account in a single transaction.
+     * Ensures both inserts succeed or both fail (data consistency).
+     */
     public boolean addTeacherWithLogin(Teacher teacher, String username, String password) {
 
         Connection conn = null;
@@ -41,7 +48,7 @@ public class TeacherDAO {
             conn = DatabaseUtil.getConnection();
             conn.setAutoCommit(false);
 
-            //Insert teacher
+            // Step 1: Insert teacher details
             String teacherQuery = "INSERT INTO teachers (first_name, last_name, date_of_birth, gender, " +
                     "phone, email, address, qualification, joining_date, status) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -65,7 +72,7 @@ public class TeacherDAO {
                     conn.rollback();
                     return false;
                 }
-
+                // Retrieve generated teacher ID
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     teacherId = rs.getInt(1);
@@ -75,7 +82,7 @@ public class TeacherDAO {
                 }
             }
 
-            //Insert user login
+            // Step 2: Create corresponding user login account
             String userQuery = "INSERT INTO users (username, password, full_name, role, teacher_id) " +
                     "VALUES (?, ?, ?, 'TEACHER', ?)";
 
@@ -92,14 +99,14 @@ public class TeacherDAO {
                 }
             }
 
-            conn.commit();
+            conn.commit();                          // Commit transaction if both inserts succeed
             return true;
 
         } catch (SQLException e) {
             System.out.println("ERROR: " + e.getMessage());
 
             try {
-                if (conn != null) conn.rollback();
+                if (conn != null) conn.rollback();           // rollback on failure
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

@@ -17,6 +17,8 @@ import java.util.Optional;
 
 public class FeeManagementController {
 
+    // --------------------------- Fee Table (Displays all fee records) ---------------------------
+
     @FXML private TableView<Fee> feeTable;
     @FXML private TableColumn<Fee, Integer>  idColumn;
     @FXML private TableColumn<Fee, String>   studentColumn;
@@ -27,6 +29,7 @@ public class FeeManagementController {
     @FXML private TableColumn<Fee, String>   statusColumn;
     @FXML private TableColumn<Fee, String>   dateColumn;
 
+    // --------------------------- Fee Form Inputs ---------------------------
     @FXML private ComboBox<Student>    studentCombo;
     @FXML private ComboBox<String>     monthCombo;
     @FXML private TextField            yearField;
@@ -35,23 +38,30 @@ public class FeeManagementController {
     @FXML private ComboBox<String>     statusCombo;
     @FXML private DatePicker           paymentDatePicker;
     @FXML private TextField            remarksArea;
+
+    // Search and filter controls
     @FXML private TextField            searchField;
     @FXML private ComboBox<String>     filterStatusCombo;
 
+    // Dashboard summary labels (financial overview)
     @FXML private Label totalCollectedLabel;
     @FXML private Label totalPendingLabel;
     @FXML private Label totalRecordsLabel;
 
+    // Action buttons (enabled only when row selected)
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
 
     private final FeeDAO    feeDAO    = new FeeDAO();
     private final StudentDAO studentDAO = new StudentDAO();
     private final ObservableList<Fee> feeList = FXCollections.observableArrayList();
+
+    // Stores selected fee record for update/delete operations
     private Fee selectedFee = null;
 
     @FXML
     public void initialize() {
+        // --------------------------- Table Column Mapping (Model -> UI) ---------------------------
         idColumn.setCellValueFactory(new PropertyValueFactory<>("feeId"));
         studentColumn.setCellValueFactory(new PropertyValueFactory<>("studentName"));
         monthColumn.setCellValueFactory(new PropertyValueFactory<>("feeMonth"));
@@ -59,6 +69,7 @@ public class FeeManagementController {
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         paidColumn.setCellValueFactory(new PropertyValueFactory<>("paidAmount"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        // Handles null payment date safely
         dateColumn.setCellValueFactory(cd -> new SimpleStringProperty(
                 cd.getValue().getPaymentDate() != null ? cd.getValue().getPaymentDate().toString() : "—"));
 
@@ -88,6 +99,8 @@ public class FeeManagementController {
         loadFees();
         updateStats();
 
+        // --------------------------- Row Selection Handler ---------------------------
+        // Populates form when a fee record is selected for update/delete
         feeTable.getSelectionModel().selectedItemProperty().addListener((obs, old, nw) -> {
             if (nw != null) {
                 selectedFee = nw;
@@ -98,6 +111,7 @@ public class FeeManagementController {
         });
     }
 
+    // --------------------------- Load Fee Records (with filter support) ---------------------------
     private void loadFees() {
         feeList.clear();
         String filter = filterStatusCombo.getValue();
@@ -109,12 +123,16 @@ public class FeeManagementController {
         updateStats();
     }
 
+    // --------------------------- Dashboard Statistics (Financial Summary) ---------------------------
     private void updateStats() {
         totalCollectedLabel.setText(String.format("Rs. %.2f", feeDAO.getTotalCollected()));
         totalPendingLabel.setText(String.format("Rs. %.2f", feeDAO.getTotalPending()));
         totalRecordsLabel.setText(String.valueOf(feeList.size()));
     }
 
+    // --------------------------- CRUD Operations ---------------------------
+
+    // Add new fee record
     @FXML
     private void handleAddFee() {
         if (!validate()) return;
@@ -128,6 +146,7 @@ public class FeeManagementController {
         }
     }
 
+    // Update selected fee record
     @FXML
     private void handleUpdateFee() {
         if (selectedFee == null) { showError("Please select a fee record to update."); return; }
@@ -143,6 +162,7 @@ public class FeeManagementController {
         }
     }
 
+    // Delete selected fee record with confirmation
     @FXML
     private void handleDeleteFee() {
         if (selectedFee == null) { showError("Please select a fee record to delete."); return; }
@@ -161,6 +181,7 @@ public class FeeManagementController {
         }
     }
 
+    // --------------------------- Search & Filter ---------------------------
     @FXML
     private void handleSearch() {
         String kw = searchField.getText().trim();
@@ -177,7 +198,8 @@ public class FeeManagementController {
     @FXML
     private void handleClearFields() { clearFields(); }
 
-    // Auto-set status when paid amount changes
+    // --------------------------- Auto Status Calculation ---------------------------
+    // Automatically updates fee status based on paid amount
     @FXML
     private void handlePaidAmountChanged() {
         try {
@@ -189,6 +211,7 @@ public class FeeManagementController {
         } catch (NumberFormatException ignored) {}
     }
 
+    // --------------------------- Validation ---------------------------
     private boolean validate() {
         if (studentCombo.getValue() == null || monthCombo.getValue() == null
                 || yearField.getText().trim().isEmpty() || amountField.getText().trim().isEmpty()) {
@@ -206,6 +229,7 @@ public class FeeManagementController {
         return true;
     }
 
+    // Builds Fee object from form inputs (used for DB operations)
     private Fee buildFee() {
         Fee f = new Fee();
         Student s = studentCombo.getValue();
@@ -221,6 +245,7 @@ public class FeeManagementController {
         return f;
     }
 
+    // Populates form fields when selecting a record
     private void populateFields(Fee f) {
         // Find and select the student in combo
         studentCombo.getItems().stream()
@@ -235,6 +260,7 @@ public class FeeManagementController {
         remarksArea.setText(f.getRemarks() != null ? f.getRemarks() : "");
     }
 
+    // Resets form after operations
     private void clearFields() {
         studentCombo.setValue(null);
         monthCombo.setValue(null);
@@ -250,6 +276,7 @@ public class FeeManagementController {
         deleteButton.setDisable(true);
     }
 
+    // --------------------------- Alert Helpers ---------------------------
     private void showSuccess(String msg) { new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK).showAndWait(); }
     private void showError(String msg)   { new Alert(Alert.AlertType.ERROR,       msg, ButtonType.OK).showAndWait(); }
 }

@@ -7,8 +7,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ClassDAO handles all database operations related to SchoolClass.
+ * It manages CRUD operations and class-teacher assignments.
+ */
 public class ClassDAO {
 
+    /** Retrieve all classes with assigned teacher names */
     public List<SchoolClass> getAllClasses() {
         List<SchoolClass> list = new ArrayList<>();
         String query = "SELECT c.*, CONCAT(t.first_name,' ',t.last_name) AS teacher_name " +
@@ -22,6 +27,7 @@ public class ClassDAO {
         return list;
     }
 
+    /** Insert a new class into the system */
     public boolean addClass(SchoolClass sc) {
         String query = "INSERT INTO classes (class_name, section, teacher_id) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -34,6 +40,7 @@ public class ClassDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Update existing class details */
     public boolean updateClass(SchoolClass sc) {
         String query = "UPDATE classes SET class_name=?, section=?, teacher_id=? WHERE class_id=?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -47,6 +54,7 @@ public class ClassDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Delete a class using its ID */
     public boolean deleteClass(int classId) {
         String query = "DELETE FROM classes WHERE class_id=?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -56,6 +64,7 @@ public class ClassDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Assign or remove a teacher from a class */
     public boolean assignTeacher(int classId, Integer teacherId) {
         String query = "UPDATE classes SET teacher_id=? WHERE class_id=?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -67,6 +76,7 @@ public class ClassDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Get number of active students in a specific class */
     public int getStudentCountForClass(int classId) {
         String query = "SELECT COUNT(*) FROM students WHERE class_id=? AND status='Active'";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -78,6 +88,10 @@ public class ClassDAO {
         return 0;
     }
 
+    /**
+     * Helper method: Maps ResultSet row into SchoolClass object
+     * Includes teacher information from JOIN query
+     */
     private SchoolClass extract(ResultSet rs) throws SQLException {
         SchoolClass sc = new SchoolClass();
         sc.setClassId(rs.getInt("class_id"));

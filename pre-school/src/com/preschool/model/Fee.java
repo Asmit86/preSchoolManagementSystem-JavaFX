@@ -30,6 +30,8 @@ public class Fee {
         this.remarks = remarks;
     }
 
+
+    // Getters and Setters
     public int getFeeId() { return feeId; }
     public void setFeeId(int feeId) { this.feeId = feeId; }
 

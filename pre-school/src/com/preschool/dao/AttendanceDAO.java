@@ -8,8 +8,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * AttendanceDAO handles all database operations related to student attendance.
+ * It supports insert/update, retrieval by date/student, and attendance summary operations.
+ */
 public class AttendanceDAO {
 
+    /**
+     * Save attendance record.
+     * Uses UPSERT logic (INSERT ... ON DUPLICATE KEY UPDATE)
+     * to update existing record if already present for same student & date.
+     */
     public boolean saveAttendance(Attendance attendance) {
         // Use row alias instead of deprecated VALUES() function for MySQL 8.x compatibility
         String query = "INSERT INTO attendance (student_id, attendance_date, status, remarks) " +
@@ -28,6 +38,7 @@ public class AttendanceDAO {
         }
     }
 
+    /** Retrieve attendance records for a specific date */
     public List<Attendance> getAttendanceByDate(LocalDate date) {
         List<Attendance> list = new ArrayList<>();
         String query = "SELECT a.*, CONCAT(s.first_name, ' ', s.last_name) AS student_name " +
@@ -42,6 +53,7 @@ public class AttendanceDAO {
         return list;
     }
 
+    /** Retrieve all attendance records of a specific student */
     public List<Attendance> getAttendanceByStudent(int studentId) {
         List<Attendance> list = new ArrayList<>();
         String query = "SELECT a.*, CONCAT(s.first_name, ' ', s.last_name) AS student_name " +
@@ -57,8 +69,9 @@ public class AttendanceDAO {
     }
 
     /**
-     * Loads all active students for a given date, pre-filling existing attendance records.
-     * Students with no record default to "Present".
+     * Generate attendance sheet for a given date.
+     * Ensures all active students are listed, even if no attendance record exists.
+     * Defaults status to "Present" for missing entries.
      */
     public List<Attendance> getAttendanceSheetForDate(LocalDate date) {
         List<Attendance> list = new ArrayList<>();
@@ -87,6 +100,7 @@ public class AttendanceDAO {
         return list;
     }
 
+    /** Count number of students marked present today */
     public int getPresentCountToday() {
         String query = "SELECT COUNT(*) FROM attendance WHERE attendance_date = ? AND status = 'Present'";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -98,6 +112,10 @@ public class AttendanceDAO {
         return 0;
     }
 
+    /**
+     * Helper method: Maps ResultSet row into Attendance object.
+     * Used to avoid repeated mapping logic across methods.
+     */
     private Attendance extract(ResultSet rs) throws SQLException {
         Attendance a = new Attendance();
         a.setAttendanceId(rs.getInt("attendance_id"));

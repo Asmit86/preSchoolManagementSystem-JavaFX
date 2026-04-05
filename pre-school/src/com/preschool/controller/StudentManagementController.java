@@ -45,8 +45,11 @@ public class StudentManagementController {
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
 
+    // DAO layer objects (handle all database operations, keeping controller clean)
     private final StudentDAO studentDAO = new StudentDAO();
     private final ClassDAO   classDAO   = new ClassDAO();
+
+    // Observable list binds data to TableView dynamically
     private final ObservableList<Student> studentList = FXCollections.observableArrayList();
     private Student selectedStudent = null;
 
@@ -85,12 +88,14 @@ public class StudentManagementController {
     }
 
     private void setupTableColumns() {
+        // Maps table columns to Student object properties
         idColumn.setCellValueFactory(new PropertyValueFactory<>("studentId"));
         nameColumn.setCellValueFactory(cd ->
                 new javafx.beans.property.SimpleStringProperty(cd.getValue().getFullName()));
         genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
         guardianColumn.setCellValueFactory(new PropertyValueFactory<>("guardianName"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("guardianPhone"));
+        // Converts classId into readable class name
         classColumn.setCellValueFactory(cd -> {
             Student s = cd.getValue();
             String display = "—";
@@ -109,11 +114,12 @@ public class StudentManagementController {
     }
 
     private void setupComboBoxes() {
+        // Predefined dropdown values for consistency
         genderCombo.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
         statusCombo.setItems(FXCollections.observableArrayList("Active", "Inactive"));
         statusCombo.setValue("Active");
         behaviourCombo.setItems(FXCollections.observableArrayList("Excellent", "Good", "Satisfactory", "Needs Improvement"));
-
+        // Load classes from DB and display meaningful names in ComboBox
         List<SchoolClass> classes = classDAO.getAllClasses();
         classCombo.setItems(FXCollections.observableArrayList(classes));
         classCombo.setConverter(new javafx.util.StringConverter<>() {
@@ -125,6 +131,7 @@ public class StudentManagementController {
     }
 
     private void loadStudents() {
+        // Reloads student list based on role (teacher/admin)
         studentList.clear();
         if (teacherClassId > 0) {
             studentList.addAll(studentDAO.getStudentsByClassId(teacherClassId));
@@ -135,6 +142,7 @@ public class StudentManagementController {
 
     @FXML
     private void handleAddStudent() {
+        // Validate before creating object
         if (!validateFields()) return;
         Student student = createStudentFromFields();
         if (studentDAO.addStudent(student)) {
@@ -148,9 +156,11 @@ public class StudentManagementController {
 
     @FXML
     private void handleUpdateStudent() {
+        // Must select a student before updating
         if (selectedStudent == null) { showError("Please select a student to update."); return; }
         if (!validateFields()) return;
         Student student = createStudentFromFields();
+        // Preserve original ID for update operation
         student.setStudentId(selectedStudent.getStudentId());
         if (studentDAO.updateStudent(student)) {
             showSuccess("Student updated successfully!");
@@ -163,7 +173,9 @@ public class StudentManagementController {
 
     @FXML
     private void handleDeleteStudent() {
+        // Prevent delete without selection
         if (selectedStudent == null) { showError("Please select a student to delete."); return; }
+        // Confirmation dialog to prevent accidental deletion
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                 "Delete " + selectedStudent.getFullName() + "?", ButtonType.OK, ButtonType.CANCEL);
         alert.setTitle("Confirm Delete");
@@ -184,6 +196,7 @@ public class StudentManagementController {
 
     @FXML
     private void handleSearch() {
+        // Dynamic search based on role and keyword
         String keyword = searchField.getText().trim();
         studentList.clear();
         if (teacherClassId > 0) {
@@ -198,6 +211,7 @@ public class StudentManagementController {
     }
 
     private boolean validateFields() {
+        // Ensures required fields are filled before submission
         if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty()
                 || dobPicker.getValue() == null || genderCombo.getValue() == null
                 || guardianNameField.getText().trim().isEmpty() || guardianPhoneField.getText().trim().isEmpty()
@@ -205,10 +219,12 @@ public class StudentManagementController {
             showError("Please fill all required fields.");
             return false;
         }
+        // Phone validation (exact 10 digits)
         if (!guardianPhoneField.getText().trim().matches("\\d{10}")) {
             showError("Guardian phone number must be exactly 10 digits.");
             return false;
         }
+        // Basic email validation
         String email = guardianEmailField.getText().trim();
         if (!email.isEmpty() && (!email.contains("@") || !email.contains(".com"))) {
             showError("Guardian email must contain '@' and '.com'.");
@@ -218,6 +234,7 @@ public class StudentManagementController {
     }
 
     private Student createStudentFromFields() {
+        // Converts UI input into Student object (DTO creation)
         Student s = new Student();
         s.setFirstName(firstNameField.getText().trim());
         s.setLastName(lastNameField.getText().trim());
@@ -231,11 +248,13 @@ public class StudentManagementController {
         s.setStatus(statusCombo.getValue());
         s.setBehaviour(behaviourCombo.getValue());
         SchoolClass sc = classCombo.getValue();
+        // Assign class if selected
         if (sc != null) { s.setClassId(sc.getClassId()); s.setSection(sc.getSection()); }
         return s;
     }
 
     private void populateFields(Student s) {
+        // Loads selected student data into form for editing
         firstNameField.setText(s.getFirstName());
         lastNameField.setText(s.getLastName());
         dobPicker.setValue(s.getDateOfBirth());
@@ -247,6 +266,7 @@ public class StudentManagementController {
         enrollmentDatePicker.setValue(s.getEnrollmentDate());
         statusCombo.setValue(s.getStatus());
         behaviourCombo.setValue(s.getBehaviour());
+        // Set corresponding class in dropdown
         if (s.getClassId() != null) {
             classCombo.getItems().stream()
                     .filter(sc -> sc.getClassId() == s.getClassId())
@@ -255,6 +275,7 @@ public class StudentManagementController {
     }
 
     private void clearFields() {
+        // Resets form to default state
         firstNameField.clear(); lastNameField.clear();
         dobPicker.setValue(null); genderCombo.setValue(null);
         guardianNameField.clear(); guardianPhoneField.clear();
@@ -262,12 +283,16 @@ public class StudentManagementController {
         enrollmentDatePicker.setValue(LocalDate.now());
         classCombo.setValue(null); behaviourCombo.setValue(null);
         statusCombo.setValue("Active");
+
         selectedStudent = null;
+
+        // Clear table selection and disable actions
         studentTable.getSelectionModel().clearSelection();
         updateButton.setDisable(true);
         deleteButton.setDisable(true);
     }
 
+    // Utility methods for consistent user feedback
     private void showSuccess(String msg) { new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK).showAndWait(); }
     private void showError(String msg)   { new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK).showAndWait(); }
 }

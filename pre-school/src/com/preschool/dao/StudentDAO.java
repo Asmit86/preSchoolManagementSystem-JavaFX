@@ -7,8 +7,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * StudentDAO handles all database operations (CRUD + search)
+ * related to Student entity using JDBC.
+ */
 public class StudentDAO {
 
+    /** Insert a new student record into database */
     public boolean addStudent(Student student) {
         String query = "INSERT INTO students (first_name, last_name, date_of_birth, gender, " +
                 "guardian_name, guardian_phone, guardian_email, address, enrollment_date, " +
@@ -33,6 +38,7 @@ public class StudentDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Update existing student record */
     public boolean updateStudent(Student student) {
         String query = "UPDATE students SET first_name=?, last_name=?, date_of_birth=?, gender=?, " +
                 "guardian_name=?, guardian_phone=?, guardian_email=?, address=?, " +
@@ -58,6 +64,7 @@ public class StudentDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Delete a student using ID */
     public boolean deleteStudent(int studentId) {
         String query = "DELETE FROM students WHERE student_id=?";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -67,6 +74,7 @@ public class StudentDAO {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    /** Get all students belonging to a specific class */
     public List<Student> getStudentsByClassId(int classId) {
         List<Student> students = new ArrayList<>();
         String query = "SELECT s.*, CONCAT(c.class_name,' - ',c.section) AS class_display " +
@@ -81,6 +89,7 @@ public class StudentDAO {
         return students;
     }
 
+    /** Search students within a class using keyword (name/guardian/phone) */
     public List<Student> searchStudentsByClassId(String keyword, int classId) {
         List<Student> students = new ArrayList<>();
         String query = "SELECT s.*, CONCAT(c.class_name,' - ',c.section) AS class_display " +
@@ -97,6 +106,7 @@ public class StudentDAO {
         return students;
     }
 
+    /** Retrieve all students from database */
     public List<Student> getAllStudents() {
         List<Student> students = new ArrayList<>();
         String query = "SELECT s.*, CONCAT(c.class_name,' - ',c.section) AS class_display " +
@@ -109,6 +119,7 @@ public class StudentDAO {
         return students;
     }
 
+    /** Get a single student by ID */
     public Student getStudentById(int studentId) {
         String query = "SELECT s.*, CONCAT(c.class_name,' - ',c.section) AS class_display " +
                 "FROM students s LEFT JOIN classes c ON s.class_id = c.class_id WHERE s.student_id=?";
@@ -121,6 +132,7 @@ public class StudentDAO {
         return null;
     }
 
+    /** Global search across student records */
     public List<Student> searchStudents(String keyword) {
         List<Student> students = new ArrayList<>();
         String query = "SELECT s.*, CONCAT(c.class_name,' - ',c.section) AS class_display " +
@@ -136,6 +148,7 @@ public class StudentDAO {
         return students;
     }
 
+    /** Count total active students in system */
     public int getTotalStudentCount() {
         String query = "SELECT COUNT(*) FROM students WHERE status='Active'";
         try (Connection conn = DatabaseUtil.getConnection();
@@ -146,6 +159,10 @@ public class StudentDAO {
         return 0;
     }
 
+    /**
+     * Helper method: Converts ResultSet row into Student object
+     * Centralizes mapping logic to avoid duplication in all methods
+     */
     private Student extract(ResultSet rs) throws SQLException {
         Student s = new Student();
         s.setStudentId(rs.getInt("student_id"));

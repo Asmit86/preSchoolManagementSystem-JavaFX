@@ -14,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ClassManagementController {
 
-    // ── Class table ──────────────────────────────────────────
+    // -------------------------------- Class table -------------------------------------------------------------------
     @FXML private TableView<SchoolClass> classTable;
     @FXML private TableColumn<SchoolClass, Integer> idColumn;
     @FXML private TableColumn<SchoolClass, String>  classNameColumn;
@@ -22,7 +22,7 @@ public class ClassManagementController {
     @FXML private TableColumn<SchoolClass, String>  teacherColumn;
     @FXML private TableColumn<SchoolClass, Integer> studentCountColumn;
 
-    // ── Class form fields ────────────────────────────────────
+    // ------------------------------- Class form fields --------------------------------------------------------------
     @FXML private TextField         classNameField;
     @FXML private TextField         sectionField;
     @FXML private ComboBox<Teacher> teacherCombo;
@@ -61,7 +61,7 @@ public class ClassManagementController {
         });
     }
 
-    // ── Data loaders ─────────────────────────────────────────
+    // --------------------------------------- Data loaders -----------------------------------------------------
 
     private void loadClasses() {
         classList.clear();
@@ -76,7 +76,7 @@ public class ClassManagementController {
         });
     }
 
-    // ── Class CRUD handlers ──────────────────────────────────
+    // ------------------------------------------ Class CRUD handlers --------------------------------------------------
 
     @FXML
     private void handleAddClass() {
@@ -139,7 +139,7 @@ public class ClassManagementController {
 
     @FXML private void handleClearFields() { clearFields(); }
 
-    // ── Helpers ──────────────────────────────────────────────
+    // ---------------------------------------------------- Helpers -------------------------------------------------
 
     private boolean validate() {
         if (classNameField.getText().trim().isEmpty() || sectionField.getText().trim().isEmpty()) {

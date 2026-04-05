@@ -16,21 +16,31 @@ import javafx.scene.layout.VBox;
 
 public class DashboardController {
 
+    // --------------------------- Main Dashboard Layout ---------------------------
+    // BorderPane is used to dynamically load different module views in center area
     @FXML private BorderPane mainBorderPane;
+
+    // --------------------------- Dashboard Statistics Labels ---------------------------
     @FXML private Label      totalStudentsLabel;
     @FXML private Label      totalTeachersLabel;
     @FXML private Label      presentTodayLabel;
     @FXML private Label      pendingFeesLabel;
+
+    // Shows logged-in user info (from session)
     @FXML private Label      loggedInUserLabel;
     @FXML private Label      userRoleLabel;
 
+    // --------------------------- Navigation Buttons (Role-based access) --------------------------
     @FXML private Button teachersButton;
     @FXML private Button classesButton;
     @FXML private Button feesButton;
     @FXML private Button reportsButton;
+
+    // UI blocks shown/hidden based on user role permissions
     @FXML private VBox   teachersStatBox;
     @FXML private VBox   feesStatBox;
 
+    // --------------------------- DAO Layer (Database Access) ---------------------------
     private final StudentDAO    studentDAO    = new StudentDAO();
     private final TeacherDAO    teacherDAO    = new TeacherDAO();
     private final AttendanceDAO attendanceDAO = new AttendanceDAO();
@@ -38,11 +48,15 @@ public class DashboardController {
 
     @FXML
     public void initialize() {
+        // Apply role-based UI restrictions (important for security/authorization)
         applyRoleBasedVisibility();
+        // Load dashboard statistics (counts from database)
         loadDashboardStats();
+        // Default view loaded when dashboard opens
         loadView("/fxml/StudentManagement.fxml");
     }
 
+    // --------------------------- Role-Based Access Control ---------------------------
     private void applyRoleBasedVisibility() {
         User user = SessionManager.getInstance().getCurrentUser();
         if (loggedInUserLabel != null) loggedInUserLabel.setText(user.getFullName());
@@ -56,6 +70,7 @@ public class DashboardController {
         setVisible(feesStatBox,     user.canAccessModule("Fees"));
     }
 
+    // --------------------------- Load Dashboard Summary Data ---------------------------
     private void loadDashboardStats() {
         User user = SessionManager.getInstance().getCurrentUser();
         totalStudentsLabel.setText(String.valueOf(studentDAO.getTotalStudentCount()));
@@ -70,6 +85,7 @@ public class DashboardController {
         if (node != null) { node.setVisible(visible); node.setManaged(visible); }
     }
 
+    // --------------------------- Navigation Handlers (Module Switching) ---------------------------
     @FXML private void handleStudentsButton()   { loadView("/fxml/StudentManagement.fxml"); }
     @FXML private void handleTeachersButton()   { loadView("/fxml/TeacherManagement.fxml"); }
     @FXML private void handleClassesButton()    { loadView("/fxml/ClassManagement.fxml"); }
@@ -77,6 +93,7 @@ public class DashboardController {
     @FXML private void handleFeesButton()       { loadView("/fxml/FeeManagement.fxml"); }
     @FXML private void handleReportsButton()    { loadView("/fxml/Reports.fxml"); }
 
+    // --------------------------- Logout Process ---------------------------
     @FXML
     private void handleLogout() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION,
@@ -88,6 +105,7 @@ public class DashboardController {
         }
     }
 
+    // --------------------------- Dynamic View Loader ---------------------------
     private void loadView(String path) {
         try {
             Parent view = FXMLLoader.load(getClass().getResource(path));

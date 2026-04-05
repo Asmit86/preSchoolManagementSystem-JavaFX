@@ -40,6 +40,8 @@ public class Student {
         this.behaviour = behaviour;
     }
 
+    // Getters and Setters
+
     public int getStudentId() { return studentId; }
     public void setStudentId(int studentId) { this.studentId = studentId; }
 
